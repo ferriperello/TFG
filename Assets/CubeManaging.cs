@@ -76,11 +76,18 @@ public class CubeManaging : MonoBehaviour {
             Debug.Log(minx.ToString());
             Debug.Log("MAXX");
             Debug.Log(maxx.ToString());
-            GameObject newCube = Instantiate(cube, new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z), Quaternion.identity);
-            newCube.transform.position = new Vector3(minx.x+Mathf.Abs(minx.x-maxx.x), minx.y + Mathf.Abs(minx.y - maxx.y), minx.z + Mathf.Abs(minx.z - maxx.z));
-            newCube.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+            GameObject newCube = Instantiate(cube, new Vector3(0,0,0), Quaternion.identity);
+            //newCube.transform.position = new Vector3(minx.x+Mathf.Abs(minx.x-maxx.x), minx.y + Mathf.Abs(minx.y - maxx.y), minx.z + Mathf.Abs(minx.z - maxx.z));
+           // newCube.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
             cubes[maxarray] = newCube;
             maxarray += 1;
+
+            Vector3 between = maxx - minx;
+            float distance = between.magnitude;
+            newCube.transform.localScale = new Vector3(distance,distance,distance);
+            newCube.transform.position = minx + (between / 2.0f);
+            //newCube.transform.LookAt(maxx);
+
         }
         maxx = new Vector3(0, 0, 0);
     }
