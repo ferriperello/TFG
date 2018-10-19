@@ -12,17 +12,44 @@ public class CameraController : MonoBehaviour {
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
     private float up_orientation = 0.0f;
+    private Bounds boundingBox;
+    public GameObject loadedObj;
+    private Vector3 originalPos;
+    private Vector3 originalCenter;
 
 
     // Use this for initialization
     void Start()
     {
-
+        Mesh mesh = loadedObj.GetComponentInChildren<MeshFilter>().mesh;
+        boundingBox = mesh.bounds;
+        //Center: (-73.9, 73.2, 41.7), Extents: (73.9, 73.2, 41.7)
+        originalPos = (loadedObj.transform.position + boundingBox.max);
+        originalCenter = (boundingBox.center - loadedObj.transform.position);
+        originalCenter.z = 0f;
+        Debug.Log(originalPos);
+        Debug.Log(originalCenter);
+        transform.position = originalPos;
+        transform.LookAt(originalCenter);
+        Debug.Log(boundingBox.max);
+        //cent = (-73.9, 73.2, 41.7)
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+        if (Input.GetKey(KeyCode.I))
+        {
+            Debug.Log(transform.position);
+            
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            transform.position = originalPos;
+            transform.LookAt(originalCenter);
+        }
 
         if (Input.GetKey(KeyCode.Q))
         {
