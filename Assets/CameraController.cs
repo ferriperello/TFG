@@ -21,18 +21,11 @@ public class CameraController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        Mesh mesh = loadedObj.GetComponentInChildren<MeshFilter>().mesh;
-        boundingBox = mesh.bounds;
-        //Center: (-73.9, 73.2, 41.7), Extents: (73.9, 73.2, 41.7)
-        originalPos = (loadedObj.transform.position + boundingBox.max);
-        originalCenter = (boundingBox.center - loadedObj.transform.position);
-        originalCenter.z = 0f;
-        Debug.Log(originalPos);
-        Debug.Log(originalCenter);
+        boundingBox = loadedObj.GetComponent<Renderer>().bounds;
+        originalPos = boundingBox.max;
+        originalCenter = boundingBox.center;
         transform.position = originalPos;
         transform.LookAt(originalCenter);
-        Debug.Log(boundingBox.max);
-        //cent = (-73.9, 73.2, 41.7)
     }
 
     // Update is called once per frame
