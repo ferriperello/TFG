@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour {
     void Start()
     {
         boundingBox = loadedObj.GetComponent<Renderer>().bounds;
+
         originalPos = boundingBox.max;
         originalCenter = boundingBox.center;
         transform.position = originalPos;
@@ -31,11 +32,24 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        
-        if (Input.GetKey(KeyCode.I))
+        if (Input.GetKey(KeyCode.T))
         {
-            Debug.Log(transform.position);
-            
+            int total = 0;
+            Debug.Log("TESTING WITH 1000000 rays");
+            float init = Time.time;
+            for (int i = 0; i < 1000000; i++)
+            {
+                Ray ray = new Ray(Camera.current.transform.position,new Vector3(0,0,0));
+                RaycastHit hitInfo;
+                if (Physics.Raycast(ray,out hitInfo))
+                {
+                    total++;
+                }
+
+            }
+            float end = Time.time;
+            Debug.Log("Total Time " + (end - init));
+
         }
 
         if (Input.GetKey(KeyCode.R))

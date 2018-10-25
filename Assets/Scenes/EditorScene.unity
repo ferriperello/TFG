@@ -413,8 +413,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39de13a277e097b4c82c01df38bdb106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubes: []
-  volumes: []
-  maxarray: 0
   cube: {fileID: 1368955501646378, guid: 4bacfa38aea150e478bfb464444f819c, type: 2}
   camera: {fileID: 534669904}
