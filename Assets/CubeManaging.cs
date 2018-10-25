@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CubeManaging : MonoBehaviour {
-    public GameObject[] cubes;
-    public float[] volumes;
-    public int maxarray;
+    public ArrayList cubes;
+    public ArrayList volumes;
 
     private bool creating;
     private Vector3 minx;
@@ -23,8 +22,8 @@ public class CubeManaging : MonoBehaviour {
         creating = false;
         minx = new Vector3(0, 0, 0);
         maxx = new Vector3(0, 0, 0);
-        cubes = new GameObject[10];
-        maxarray = 0;
+        cubes = new ArrayList();
+        volumes = new ArrayList();
 
     }
 	
@@ -78,9 +77,11 @@ public class CubeManaging : MonoBehaviour {
             Debug.Log(maxx.ToString());
             GameObject newCube = Instantiate(cube, new Vector3(0,0,0), Quaternion.identity);
             //newCube.transform.position = new Vector3(minx.x+Mathf.Abs(minx.x-maxx.x), minx.y + Mathf.Abs(minx.y - maxx.y), minx.z + Mathf.Abs(minx.z - maxx.z));
-           // newCube.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-            cubes[maxarray] = newCube;
-            maxarray += 1;
+            // newCube.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+            Bounds bnc = newCube.GetComponent<Renderer>().bounds;
+            cubes.Add(newCube);
+            volumes.Add(bnc.size);
+            Debug.Log(bnc.size);
 
             Vector3 between = maxx - minx;
             float distance = between.magnitude;
