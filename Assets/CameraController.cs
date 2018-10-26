@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour {
             float init = Time.time;
             for (int i = 0; i < 1000000; i++)
             {
-                Ray ray = new Ray(Camera.current.transform.position,new Vector3(0,0,0));
+                Ray ray = new Ray(Camera.main.transform.position,new Vector3(0,0,0));
                 RaycastHit hitInfo;
                 if (Physics.Raycast(ray,out hitInfo))
                 {
