@@ -11,6 +11,8 @@ public class RayTestingScript : MonoBehaviour {
     private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
     private float up_orientation = 0.0f;
+    public GameObject sphere;
+    public GameObject cube;
 
     // Use this for initialization
     void Start () {
@@ -25,19 +27,34 @@ public class RayTestingScript : MonoBehaviour {
         {
             Debug.Log("TESTING WITH 100000000 rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
-            int total = 0;
+            double total = 0;
             //fer el loop
-            for (int i = 0; i < 100000000; i++)
+            for (int i = 0; i < 1000000; i++)
             {
-                Ray ray = new Ray(Camera.main.transform.position, new Vector3(0, 0, 0));
+                //Vector3 randomXY = Random.rotation.eulerAngles;
+                Vector3 randomXY = Random.insideUnitSphere;
+                //Debug.Log(randomXY);
+                //Debug.Log(sphere.transform.position);
+                //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
+                Ray ray = new Ray(sphere.transform.position, randomXY);
+                //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
                 RaycastHit hitInfo;
+                Physics.Raycast(ray, out hitInfo);
+               /* RaycastHit hitInfo;
                 if (Physics.Raycast(ray, out hitInfo))
                 {
-                    total++;
-                }
+                    total = total + 1;
+                    if (total % 10000000 == 0)
+                    {
+                        GameObject newCube = Instantiate(cube, new Vector3(0, 0, 0), Quaternion.identity);
+                        newCube.transform.localScale = new Vector3(10f, 10f, 10f);
+                        newCube.transform.position = hitInfo.point;
+                    }
+                }*/
 
             }
             chrono.Stop();
+            Debug.Log("Total Hits " + total);
             Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
 
         }
