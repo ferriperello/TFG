@@ -25,7 +25,7 @@ public class RayTestingScript : MonoBehaviour {
         
         if (Input.GetKey(KeyCode.T))
         {
-            int loop = 1000000;
+            int loop = 100000000;
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             double total = 0;
@@ -69,7 +69,7 @@ public class RayTestingScript : MonoBehaviour {
                 p0 = hitTransform.TransformPoint(p0);
                 p1 = hitTransform.TransformPoint(p1);
                 p2 = hitTransform.TransformPoint(p2);
-                Debug.DrawLine(p0, p1,Color.blue,500);
+                Debug.DrawLine(p0, p1, Color.blue, 500);
                 Debug.DrawLine(p1, p2, Color.blue, 500);
                 Debug.DrawLine(p2, p0, Color.blue, 500);
                 Debug.Log(hitInfo.triangleIndex);
