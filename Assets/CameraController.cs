@@ -34,21 +34,54 @@ public class CameraController : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.T))
         {
-            int total = 0;
-            Debug.Log("TESTING WITH 1000000 rays");
-            float init = Time.time;
-            for (int i = 0; i < 1000000; i++)
+            int loop = 100000000;
+            Debug.Log("TESTING WITH " + loop + " rays");
+            var chrono = System.Diagnostics.Stopwatch.StartNew();
+            double total = 0;
+            //fer el loop
+            for (int i = 0; i < loop; i++)
             {
-                Ray ray = new Ray(Camera.main.transform.position,new Vector3(0,0,0));
+                //Vector3 randomXY = Random.rotation.eulerAngles;
+                Vector3 randomXY = Random.insideUnitSphere;
+                //Debug.Log(randomXY);
+                //Debug.Log(sphere.transform.position);
+                //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
+                Ray ray = new Ray(GetComponent<Camera>().transform.position, randomXY);
+                //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
                 RaycastHit hitInfo;
-                if (Physics.Raycast(ray,out hitInfo))
+                //Physics.Raycast(ray, out hitInfo);
+                /*if (Physics.Raycast(ray, out hitInfo))
                 {
-                    total++;
-                }
+                    total = total + 1;
+                }*/
+                //Part del codi per a retornar el triangle amb el que ha colisionat
+                if (!Physics.Raycast(ray, out hitInfo))
+                    break;
 
+                MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                if (meshCollider == null || meshCollider.sharedMesh == null)
+                    break;
+
+                Mesh mesh = meshCollider.sharedMesh;
+                Vector3[] vertices = mesh.vertices;
+                int[] triangles = mesh.triangles;
+                Vector3 p0 = vertices[triangles[hitInfo.triangleIndex * 3 + 0]];
+                Vector3 p1 = vertices[triangles[hitInfo.triangleIndex * 3 + 1]];
+                Vector3 p2 = vertices[triangles[hitInfo.triangleIndex * 3 + 2]];
+                Transform hitTransform = hitInfo.collider.transform;
+                p0 = hitTransform.TransformPoint(p0);
+                p1 = hitTransform.TransformPoint(p1);
+                p2 = hitTransform.TransformPoint(p2);
+                Debug.DrawLine(p0, p1,Color.blue,500);
+                Debug.DrawLine(p1, p2, Color.blue, 500);
+                Debug.DrawLine(p2, p0, Color.blue, 500);
+                Debug.Log(hitInfo.triangleIndex);
+                
             }
-            float end = Time.time;
-            Debug.Log("Total Time " + (end - init));
+            chrono.Stop();
+
+            Debug.Log("Total Hits " + total);
+            Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
 
         }
 

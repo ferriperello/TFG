@@ -25,11 +25,12 @@ public class RayTestingScript : MonoBehaviour {
         
         if (Input.GetKey(KeyCode.T))
         {
-            Debug.Log("TESTING WITH 100000000 rays");
+            int loop = 1000000;
+            Debug.Log("TESTING WITH " + loop  + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             double total = 0;
             //fer el loop
-            for (int i = 0; i < 1000000; i++)
+            for (int i = 0; i < loop; i++)
             {
                 //Vector3 randomXY = Random.rotation.eulerAngles;
                 Vector3 randomXY = Random.insideUnitSphere;
@@ -39,21 +40,43 @@ public class RayTestingScript : MonoBehaviour {
                 Ray ray = new Ray(sphere.transform.position, randomXY);
                 //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
                 RaycastHit hitInfo;
-                Physics.Raycast(ray, out hitInfo);
-               /* RaycastHit hitInfo;
-                if (Physics.Raycast(ray, out hitInfo))
-                {
-                    total = total + 1;
-                    if (total % 10000000 == 0)
-                    {
-                        GameObject newCube = Instantiate(cube, new Vector3(0, 0, 0), Quaternion.identity);
-                        newCube.transform.localScale = new Vector3(10f, 10f, 10f);
-                        newCube.transform.position = hitInfo.point;
-                    }
-                }*/
+                //Physics.Raycast(ray, out hitInfo);
+                 if (Physics.Raycast(ray, out hitInfo))
+                 {
+                     total = total + 1;
+                     if (total % 10000000 == 0)
+                     {
+                         GameObject newCube = Instantiate(cube, new Vector3(0, 0, 0), Quaternion.identity);
+                         newCube.transform.localScale = new Vector3(10f, 10f, 10f);
+                         newCube.transform.position = hitInfo.point;
+                     }
+                 }
+                /*//Part del codi per a retornar el triangle amb el que ha colisionat
+                if (!Physics.Raycast(ray, out hitInfo))
+                    return;
 
+                MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                if (meshCollider == null || meshCollider.sharedMesh == null)
+                    return;
+
+                Mesh mesh = meshCollider.sharedMesh;
+                Vector3[] vertices = mesh.vertices;
+                int[] triangles = mesh.triangles;
+                Vector3 p0 = vertices[triangles[hitInfo.triangleIndex * 3 + 0]];
+                Vector3 p1 = vertices[triangles[hitInfo.triangleIndex * 3 + 1]];
+                Vector3 p2 = vertices[triangles[hitInfo.triangleIndex * 3 + 2]];
+                Transform hitTransform = hitInfo.collider.transform;
+                p0 = hitTransform.TransformPoint(p0);
+                p1 = hitTransform.TransformPoint(p1);
+                p2 = hitTransform.TransformPoint(p2);
+                Debug.DrawLine(p0, p1,Color.blue,500);
+                Debug.DrawLine(p1, p2, Color.blue, 500);
+                Debug.DrawLine(p2, p0, Color.blue, 500);
+                Debug.Log(hitInfo.triangleIndex);
+                */
             }
             chrono.Stop();
+
             Debug.Log("Total Hits " + total);
             Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
 
