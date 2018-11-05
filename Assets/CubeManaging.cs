@@ -80,17 +80,18 @@ public class CubeManaging : MonoBehaviour {
             // newCube.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
             
             Vector3 between = maxx - minx;
-            float distance = between.magnitude;
+            float betweenX = maxx.x - minx.x;
+            float betweenZ = maxx.z - minx.z;
+            //float distance = between.magnitude;
             //newCube.transform.localScale = new Vector3(distance,distance,distance);
-            //FER L'ESCALAT DIFERENT PER A X I Z (QUE SURTI UN RECTANGLE SI FA FALTA, NO SEMPRE SERA QUADRAT)
-            newCube.transform.localScale = new Vector3(distance, 10f, distance);
+            //newCube.transform.localScale = new Vector3(distance, 10f, distance);
+            newCube.transform.localScale = new Vector3(Mathf.Abs(betweenX), 10f, Mathf.Abs(betweenZ));
             newCube.transform.position = minx + (between / 2.0f);
             //newCube.transform.LookAt(maxx);
 
-            Bounds bnc = newCube.GetComponent<Renderer>().bounds;
             cubes.Add(newCube);
-            volumes.Add(bnc.size);
-            Debug.Log(bnc.size);
+            volumes.Add(newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z);
+            //Debug.Log(newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z);
 
         }
         maxx = new Vector3(0, 0, 0);
