@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        boundingBox = loadedObj.GetComponent<Renderer>().bounds;
+        boundingBox = loadedObj.GetComponentInChildren<Renderer>().bounds;
 
         originalPos = boundingBox.max;
         originalCenter = boundingBox.center;
@@ -34,13 +34,14 @@ public class CameraController : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.T))
         {
-            int loop = 100000000;
+            int loop = 100000;
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             double total = 0;
             //fer el loop
             for (int i = 0; i < loop; i++)
             {
+                if (i % 10000 == 0) Debug.Log("Iteració : "+i);
                 //Vector3 randomXY = Random.rotation.eulerAngles;
                 Vector3 randomXY = Random.insideUnitSphere;
                 //Debug.Log(randomXY);
@@ -55,26 +56,29 @@ public class CameraController : MonoBehaviour {
                  total = total + 1;
                 }*/
                 //Part del codi per a retornar el triangle amb el que ha colisionat
-                if (!Physics.Raycast(ray, out hitInfo))
-                    break;
-                MeshCollider meshCollider = hitInfo.collider as MeshCollider;
-                if (meshCollider == null || meshCollider.sharedMesh == null)
-                    break;
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    total = total + 1;
+                    //Physics.Raycast(ray, out hitInfo);
+                    Debug.Log(hitInfo.triangleIndex);
+                    MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                    /* (meshCollider == null || meshCollider.sharedMesh == null)
+                        break;*/
 
-                Mesh mesh = meshCollider.sharedMesh;
-                Vector3[] vertices = mesh.vertices;
-                int[] triangles = mesh.triangles;
-                Vector3 p0 = vertices[triangles[hitInfo.triangleIndex * 3 + 0]];
-                Vector3 p1 = vertices[triangles[hitInfo.triangleIndex * 3 + 1]];
-                Vector3 p2 = vertices[triangles[hitInfo.triangleIndex * 3 + 2]];
-                Transform hitTransform = hitInfo.collider.transform;
-                p0 = hitTransform.TransformPoint(p0);
-                p1 = hitTransform.TransformPoint(p1);
-                p2 = hitTransform.TransformPoint(p2);
-                Debug.DrawLine(p0, p1, Color.blue, 500);
-                Debug.DrawLine(p1, p2, Color.blue, 500);
-                Debug.DrawLine(p2, p0, Color.blue, 500);
-                Debug.Log(hitInfo.triangleIndex);
+                    /* Mesh mesh = meshCollider.sharedMesh;
+                     Vector3[] vertices = mesh.vertices;
+                     int[] triangles = mesh.triangles;
+                     Vector3 p0 = vertices[triangles[hitInfo.triangleIndex * 3 + 0]];
+                     Vector3 p1 = vertices[triangles[hitInfo.triangleIndex * 3 + 1]];
+                     Vector3 p2 = vertices[triangles[hitInfo.triangleIndex * 3 + 2]];
+                     Transform hitTransform = hitInfo.collider.transform;
+                     p0 = hitTransform.TransformPoint(p0);
+                     p1 = hitTransform.TransformPoint(p1);
+                     p2 = hitTransform.TransformPoint(p2);
+                     Debug.DrawLine(p0, p1, Color.blue, 500);
+                     Debug.DrawLine(p1, p2, Color.blue, 500);
+                     Debug.DrawLine(p2, p0, Color.blue, 500);*/
+                }
             }
             chrono.Stop();
 
