@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.T))
         {
-            int loop = 100000;
+            int loop = 1000000;
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             double total = 0;
@@ -60,7 +60,7 @@ public class CameraController : MonoBehaviour {
                 {
                     total = total + 1;
                     //Physics.Raycast(ray, out hitInfo);
-                    Debug.Log(hitInfo.triangleIndex);
+                    //Debug.Log(hitInfo.triangleIndex);
                     MeshCollider meshCollider = hitInfo.collider as MeshCollider;
                     /* (meshCollider == null || meshCollider.sharedMesh == null)
                         break;*/
