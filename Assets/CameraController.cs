@@ -17,6 +17,10 @@ public class CameraController : MonoBehaviour {
     private Vector3 originalPos;
     private Vector3 originalCenter;
 
+    public bool[] findedTriangles;
+    public int[] nts;
+    public int[] ots;
+    public int nTriangles;
 
     // Use this for initialization
     void Start()
@@ -27,6 +31,15 @@ public class CameraController : MonoBehaviour {
         originalCenter = boundingBox.center;
         transform.position = originalPos;
         transform.LookAt(originalCenter);
+
+        //amb el objecte ja carregat
+        ots = loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles;
+        nTriangles = ots.Length/3;
+        findedTriangles = new bool[nTriangles];
+        nts = new int[nTriangles * 3];
+        Debug.Log(findedTriangles.Length);
+        Debug.Log(findedTriangles[0]);
+        //loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles =  nts;
     }
 
     // Update is called once per frame
@@ -61,7 +74,7 @@ public class CameraController : MonoBehaviour {
                     total = total + 1;
                     //Physics.Raycast(ray, out hitInfo);
                     //Debug.Log(hitInfo.triangleIndex);
-                    MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                    //MeshCollider meshCollider = hitInfo.collider as MeshCollider;
                     /* (meshCollider == null || meshCollider.sharedMesh == null)
                         break;*/
 
@@ -78,6 +91,7 @@ public class CameraController : MonoBehaviour {
                      Debug.DrawLine(p0, p1, Color.blue, 500);
                      Debug.DrawLine(p1, p2, Color.blue, 500);
                      Debug.DrawLine(p2, p0, Color.blue, 500);*/
+                    findedTriangles[hitInfo.triangleIndex] = true;
                 }
             }
             chrono.Stop();
@@ -85,12 +99,26 @@ public class CameraController : MonoBehaviour {
             Debug.Log("Total Hits " + total);
             Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
 
+            //set new triangles
+            int j = 0;
+            for (int i = 0; i < nTriangles; i++) {
+                if (findedTriangles[i])
+                {
+                    nts[j] = ots[i * 3];
+                    nts[j+1] = ots[(i * 3)+1];
+                    nts[j+2] = ots[(i * 3)+2];
+                    j+= 3;
+                }
+            }
+            loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = nts;
+
         }
 
         if (Input.GetKey(KeyCode.R))
         {
             transform.position = originalPos;
             transform.LookAt(originalCenter);
+            loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = ots;
         }
 
         if (Input.GetKey(KeyCode.Q))

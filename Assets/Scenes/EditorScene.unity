@@ -274,6 +274,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadedObj: {fileID: 414952468}
+  findedTriangles: 
+  nts: 
+  ots: 
+  nTriangles: 0
+--- !u!1 &1275714256 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: f0737e92ea4c2204caf2e797fcb7976a,
+    type: 3}
+  m_PrefabInternal: {fileID: 1486414798}
+--- !u!64 &1275714260
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1275714256}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: f0737e92ea4c2204caf2e797fcb7976a, type: 3}
 --- !u!1001 &1486414798
 Prefab:
   m_ObjectHideFlags: 0

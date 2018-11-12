@@ -24,11 +24,16 @@ public class CubeManaging : MonoBehaviour {
         maxx = new Vector3(0, 0, 0);
         cubes = new ArrayList();
         volumes = new ArrayList();
+        string filename = Menu_Manager.GetFilename();
+        string filePath = Menu_Manager.GetFilepath();
+        Debug.Log("NEW SCENE");
+        Debug.Log(filename);
+        Debug.Log(filePath);
 
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 
         if (Input.GetKey(KeyCode.RightShift))
         {
