@@ -4,26 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
-using UnityEditor;
+using SimpleFileBrowser;
 
 public class Menu_Manager : MonoBehaviour {
 
-    public InputField inputField;
-    private static string fileRoute;
+    public Text textField;
     private static string filePath;
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("Objects", ".obj"));
+        FileBrowser.SetDefaultFilter(".obj");
+        FileBrowser.AddQuickLink("Users", "C:\\Users", null);
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        fileRoute = inputField.text;
 	}
 
     public void ChangeLevel() {
-        Debug.Log(fileRoute);
         Debug.Log(filePath);
         Debug.Log("CHANGEEE");
         /*
@@ -34,21 +34,33 @@ public class Menu_Manager : MonoBehaviour {
         SceneManager.LoadScene("EditorScene", LoadSceneMode.Single);
     }
 
-    public static string GetFilename() {
-        return fileRoute;
-    }
-    public static string GetFilepath()
+    public static string GetFilePath()
     {
         return filePath;
     }
 
-    public void Filepath()
+    public void OpenBrowser()
     {
-        filePath = EditorUtility.OpenFilePanel("select OBJ", Application.persistentDataPath, "obj");
-        if (filePath.Length != 0)
+        StartCoroutine(ShowLoadDialogCoroutine());
+        
+    }
+
+    IEnumerator ShowLoadDialogCoroutine()
+    {
+        // Show a load file dialog and wait for a response from user
+        // Load file/folder: file, Initial path: default (Documents), Title: "Load File", submit button text: "Load"
+        yield return FileBrowser.WaitForLoadDialog(false, null, "Load File", "Load");
+
+        // Dialog is closed
+        // Print whether a file is chosen (FileBrowser.Success)
+        // and the path to the selected file (FileBrowser.Result) (null, if FileBrowser.Success is false)
+        Debug.Log(FileBrowser.Success + " " + FileBrowser.Result);
+        if (FileBrowser.Success)
         {
-            Debug.Log(filePath);
+            filePath = FileBrowser.Result;
+            textField.text = filePath;
         }
+        
     }
 }
 
