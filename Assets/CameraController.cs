@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.T))
         {
-            int loop = 10000000;
+            int loop = 1000000;
 
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
@@ -66,7 +66,7 @@ public class CameraController : MonoBehaviour {
                 //Debug.Log(randomXY);
                 //Debug.Log(sphere.transform.position);
                 //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
-               /* float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
+                /*float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
                 ArrayList volumes = CubeManaging.GetVolumesArray();
                 Debug.Log("randV"+randvolume);
                 int k = 0;

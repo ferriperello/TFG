@@ -30,12 +30,12 @@ public class CubeManaging : MonoBehaviour {
         cubes = new ArrayList();
         volumes = new ArrayList();
         totalVolume = 0;
-        string filePath = Menu_Manager.GetFilepath();
+        string filePath = Menu_Manager.GetFilePath();
         Debug.Log("NEW SCENE");
         Debug.Log(filePath);
         if (filePath != "")
         {
-            Debug.Log("Carreguem nou OBJ");
+            /*Debug.Log("Carreguem nou OBJ");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             loadedObject = OBJLoader.LoadOBJFile(filePath);
             loadedObject.transform.position = new Vector3(500, 0, 500);
@@ -51,7 +51,7 @@ public class CubeManaging : MonoBehaviour {
             Debug.Log("Total Time Carrega" + chrono.ElapsedMilliseconds);
             ots = loadedObject.GetComponentInChildren<MeshFilter>().mesh.triangles;
             nTriangles = ots.Length / 3;
-            Debug.Log("triangles: " + nTriangles);
+            Debug.Log("triangles: " + nTriangles);*/
 
         }
 
