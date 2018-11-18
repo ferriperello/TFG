@@ -22,6 +22,8 @@ public class CameraController : MonoBehaviour {
     public int[] ots;
     public int nTriangles;
 
+    public GameObject prefab;
+
     // Use this for initialization
     void Start()
     {
@@ -47,10 +49,12 @@ public class CameraController : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.T))
         {
-            int loop = 1000000;
+            int loop = 10000000;
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             double total = 0;
+
+            Debug.Log(CubeManaging.GetTotalVolume());
             //fer el loop
             for (int i = 0; i < loop; i++)
             {
@@ -60,7 +64,37 @@ public class CameraController : MonoBehaviour {
                 //Debug.Log(randomXY);
                 //Debug.Log(sphere.transform.position);
                 //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
-                Ray ray = new Ray(GetComponent<Camera>().transform.position, randomXY);
+               /* float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
+                ArrayList volumes = CubeManaging.GetVolumesArray();
+                Debug.Log("randV"+randvolume);
+                int k = 0;
+                float volsdescarted = 0;
+                Debug.Log("vol de " + k + ":" + volumes[k]);
+                while ((volsdescarted +(float)volumes[k]) < randvolume)
+                {
+                    Debug.Log("entro");
+                    volsdescarted += (float)volumes[k];
+                    k++;
+                    Debug.Log("vol de " + k + ":" + volumes[k]);
+                    Debug.Log("totalVuntilnow" + volsdescarted);
+
+                }
+                Debug.Log(volumes);
+                Debug.Log(k);
+                GameObject cube = CubeManaging.GetCubeinArray(k);
+                Mesh someMesh = cube.GetComponent<MeshFilter>().mesh;
+                Bounds b = someMesh.bounds;
+                Vector3 max = b.max;
+                Vector3 min = b.max;
+                Debug.Log("MAX"+max);
+                Debug.Log("MIN"+min);
+                Vector3 point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+                while (!someMesh.bounds.Contains(point))
+                {
+                    point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+                }
+                //Instantiate(prefab, point, Quaternion.identity);*/
+                Ray ray = new Ray(transform.position, randomXY);
                 //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
                 RaycastHit hitInfo;
                 //Physics.Raycast(ray, out hitInfo);

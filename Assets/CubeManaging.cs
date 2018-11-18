@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CubeManaging : MonoBehaviour {
-    public ArrayList cubes;
-    public ArrayList volumes;
+    public static ArrayList cubes;
+    public static ArrayList volumes;
+    public static float totalVolume;
 
     private bool creating;
     private Vector3 minx;
@@ -24,6 +25,7 @@ public class CubeManaging : MonoBehaviour {
         maxx = new Vector3(0, 0, 0);
         cubes = new ArrayList();
         volumes = new ArrayList();
+        totalVolume = 0;
         string filename = Menu_Manager.GetFilename();
         string filePath = Menu_Manager.GetFilepath();
         Debug.Log("NEW SCENE");
@@ -94,11 +96,33 @@ public class CubeManaging : MonoBehaviour {
             newCube.transform.position = minx + (between / 2.0f);
             //newCube.transform.LookAt(maxx);
 
+            float cubevolume = newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z;
             cubes.Add(newCube);
-            volumes.Add(newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z);
+            volumes.Add(cubevolume);
+            totalVolume += cubevolume;
+
             //Debug.Log(newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z);
 
         }
         maxx = new Vector3(0, 0, 0);
+    }
+
+    public static float GetTotalVolume()
+    {
+        return totalVolume;
+    }
+
+    public static ArrayList GetVolumesArray()
+    {
+        return volumes;
+    }
+
+    public static ArrayList GetCubesArray()
+    {
+        return cubes;
+    }
+    public static GameObject GetCubeinArray(int i)
+    {
+        return (GameObject)cubes[i];
     }
 }
