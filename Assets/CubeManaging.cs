@@ -15,6 +15,10 @@ public class CubeManaging : MonoBehaviour {
     public GameObject cube;
     public Camera camera;
 
+    public GameObject loadedObject;
+    public int[] ots;
+    public int nTriangles;
+
     Ray ray;
     RaycastHit hit;
 
@@ -26,11 +30,30 @@ public class CubeManaging : MonoBehaviour {
         cubes = new ArrayList();
         volumes = new ArrayList();
         totalVolume = 0;
-        string filename = Menu_Manager.GetFilename();
         string filePath = Menu_Manager.GetFilepath();
         Debug.Log("NEW SCENE");
-        Debug.Log(filename);
         Debug.Log(filePath);
+        if (filePath != "")
+        {
+            Debug.Log("Carreguem nou OBJ");
+            var chrono = System.Diagnostics.Stopwatch.StartNew();
+            loadedObject = OBJLoader.LoadOBJFile(filePath);
+            loadedObject.transform.position = new Vector3(500, 0, 500);
+            
+            Mesh mesh = loadedObject.GetComponentInChildren<MeshFilter>().mesh;
+            Transform[] mfl = loadedObject.GetComponentsInChildren<Transform>(false);
+            MeshCollider meshCollider =  mfl[1].gameObject.AddComponent<MeshCollider>();
+
+
+            meshCollider.sharedMesh = mesh;
+
+            chrono.Stop();
+            Debug.Log("Total Time Carrega" + chrono.ElapsedMilliseconds);
+            ots = loadedObject.GetComponentInChildren<MeshFilter>().mesh.triangles;
+            nTriangles = ots.Length / 3;
+            Debug.Log("triangles: " + nTriangles);
+
+        }
 
     }
 
