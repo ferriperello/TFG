@@ -414,11 +414,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &502732067 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100000, guid: f0737e92ea4c2204caf2e797fcb7976a,
-    type: 3}
-  m_PrefabInternal: {fileID: 1187641810}
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59a140c8326077498ec1d57cacae6d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadedObj: {fileID: 502732067}
+  loadedObj: {fileID: 1393274164}
   findedTriangles: 
   nts: 
   ots: 
@@ -867,6 +862,10 @@ Prefab:
     - target: {fileID: 2300000, guid: f0737e92ea4c2204caf2e797fcb7976a, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: f0737e92ea4c2204caf2e797fcb7976a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0737e92ea4c2204caf2e797fcb7976a, type: 3}

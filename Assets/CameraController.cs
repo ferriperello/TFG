@@ -27,6 +27,7 @@ public class CameraController : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        //boundingBox = loadedObj.GetComponentInChildren<Renderer>().GetComponentInChildren<Renderer>().bounds;
         boundingBox = loadedObj.GetComponentInChildren<Renderer>().bounds;
 
         originalPos = boundingBox.max;
@@ -39,9 +40,10 @@ public class CameraController : MonoBehaviour {
         nTriangles = ots.Length/3;
         findedTriangles = new bool[nTriangles];
         nts = new int[nTriangles * 3];
+        Debug.Log(ots[0]);
         Debug.Log(findedTriangles.Length);
         Debug.Log(findedTriangles[0]);
-        //loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles =  nts;
+        //loadedObj.GetComponentInChildren<MeshFilter>().GetComponentInChildren<MeshFilter>().mesh.triangles =  nts;
 
     }
 
@@ -160,6 +162,10 @@ public class CameraController : MonoBehaviour {
             transform.position = originalPos;
             transform.LookAt(originalCenter);
             loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = ots;
+        }
+        if (Input.GetKey(KeyCode.Y))
+        {
+            Start();
         }
 
         if (Input.GetKey(KeyCode.Q))

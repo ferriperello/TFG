@@ -17,7 +17,8 @@ public class ObjectLoader : MonoBehaviour {
         objImporter = loadedObject.AddComponent<ObjectImporter>();
         importOptions.buildColliders = true;
 
-        objImporter.ImportModelAsync("test", filePath, null, importOptions);
+        objImporter.ImportModelAsync("loadedObject", filePath, loadedObject.transform, importOptions);
+        //objImporter.ImportFile(filePath, loadedObject.transform, importOptions);  
 
     }
 	
