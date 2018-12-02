@@ -115,9 +115,19 @@ public class CubeManaging : MonoBehaviour {
             //float distance = between.magnitude;
             //newCube.transform.localScale = new Vector3(distance,distance,distance);
             //newCube.transform.localScale = new Vector3(distance, 10f, distance);
-            newCube.transform.localScale = new Vector3(Mathf.Abs(betweenX), 10f, Mathf.Abs(betweenZ));
-            newCube.transform.position = minx + (between / 2.0f);
+            Vector3 newpos = minx + (between / 2.0f);
+            newpos.y = Mathf.Min(maxx.y,minx.y);
+            Debug.Log("Maxx y = " + maxx.y);
+            Debug.Log("Minx y = " + minx.y);
+            Debug.Log("Min y = " + newpos.y);
+            Debug.Log("Min y / 2 = " + newpos.y / 2);
+            
+            Debug.Log("Min y = "+newpos.y);
+            
             //newCube.transform.LookAt(maxx);
+            newCube.transform.localScale = new Vector3(Mathf.Abs(betweenX), 10f, Mathf.Abs(betweenZ));
+            newpos.y += (newpos.y / 2);
+            newCube.transform.position = newpos;
 
             float cubevolume = newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z;
             cubes.Add(newCube);

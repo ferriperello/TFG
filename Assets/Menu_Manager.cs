@@ -23,7 +23,8 @@ public class Menu_Manager : MonoBehaviour {
 	void Update () {
 	}
 
-    public void ChangeLevel() {
+    public void ChangeLevel()
+    {
         Debug.Log(filePath);
         Debug.Log("CHANGEEE");
         /*

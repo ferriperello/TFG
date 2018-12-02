@@ -8,6 +8,7 @@ public class ObjectLoader : MonoBehaviour {
     public GameObject loadedObject;
     public ImportOptions importOptions = new ImportOptions();
     private ObjectImporter objImporter;
+    private bool firstLoad = false;
 
     // Use this for initialization
     void Start () {
@@ -18,12 +19,31 @@ public class ObjectLoader : MonoBehaviour {
         importOptions.buildColliders = true;
 
         objImporter.ImportModelAsync("loadedObject", filePath, loadedObject.transform, importOptions);
+        firstLoad = true;
         //objImporter.ImportFile(filePath, loadedObject.transform, importOptions);  
-
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (firstLoad)
+        {
+            if (objImporter.AllImported)
+            {
+                Camera.main.GetComponent<CameraController>().WhenLoaded();
+                firstLoad = false;
+            }
+        }
+    }
+
+    public class CustomObjImporter : ObjectImporter
+    {
+        protected override void OnImportingComplete()
+        {
+            print("ON IMPORT COMPLETE");
+            base.OnImportingComplete();
+            Camera.main.GetComponent<CameraController>().WhenLoaded();
+        }
+    }
 }
+
+

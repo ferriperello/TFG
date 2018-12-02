@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AsImpL;
 
 
 public class CameraController : MonoBehaviour {
@@ -57,85 +58,105 @@ public class CameraController : MonoBehaviour {
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             double total = 0;
+            double lasthitround = 1;
+            double minrounds = loop * 0.1;
+            Debug.Log("minrounds : " + minrounds);
 
             Debug.Log(CubeManaging.GetTotalVolume());
             //fer el loop
             for (int i = 0; i < loop; i++)
             {
-                if (i % 10000 == 0) Debug.Log("Iteració : "+i);
-                //Vector3 randomXY = Random.rotation.eulerAngles;
-                Vector3 randomXY = Random.insideUnitSphere;
-                //Debug.Log(randomXY);
-                //Debug.Log(sphere.transform.position);
-                //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
-                /*float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
-                ArrayList volumes = CubeManaging.GetVolumesArray();
-                Debug.Log("randV"+randvolume);
-                int k = 0;
-                float volsdescarted = 0;
-                Debug.Log("vol de " + k + ":" + volumes[k]);
-                while ((volsdescarted +(float)volumes[k]) < randvolume)
+                if (!(lasthitround % minrounds == 0))
                 {
-                    Debug.Log("entro");
-                    volsdescarted += (float)volumes[k];
-                    k++;
+                    if (i % 1000 == 0) Debug.Log("Iteració : " + i);
+                    //Vector3 randomXY = Random.rotation.eulerAngles;
+                    Vector3 randomXY = Random.insideUnitSphere;
+                    //Debug.Log(randomXY);
+                    //Debug.Log(sphere.transform.position);
+                    //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
+                    /*float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
+                    ArrayList volumes = CubeManaging.GetVolumesArray();
+                    Debug.Log("randV"+randvolume);
+                    int k = 0;
+                    float volsdescarted = 0;
                     Debug.Log("vol de " + k + ":" + volumes[k]);
-                    Debug.Log("totalVuntilnow" + volsdescarted);
+                    while ((volsdescarted +(float)volumes[k]) < randvolume)
+                    {
+                        Debug.Log("entro");
+                        volsdescarted += (float)volumes[k];
+                        k++;
+                        Debug.Log("vol de " + k + ":" + volumes[k]);
+                        Debug.Log("totalVuntilnow" + volsdescarted);
 
-                }
-                Debug.Log(volumes);
-                Debug.Log(k);
-                GameObject cube = CubeManaging.GetCubeinArray(k);
-                Mesh someMesh = cube.GetComponent<MeshFilter>().mesh;
-                Bounds b = someMesh.bounds;
-                Vector3 max = b.max;
-                Vector3 min = b.max;
-                Debug.Log("MAX"+max);
-                Debug.Log("MIN"+min);
-                Vector3 point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
-                while (!someMesh.bounds.Contains(point))
-                {
-                    point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
-                }
-                //Instantiate(prefab, point, Quaternion.identity);*/
-                Ray ray = new Ray(transform.position, randomXY);
-                //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
-                RaycastHit hitInfo;
-                //Physics.Raycast(ray, out hitInfo);
-                /*if (Physics.Raycast(ray, out hitInfo))
-                {
-                 total = total + 1;
-                }*/
-                //Part del codi per a retornar el triangle amb el que ha colisionat
-                if (Physics.Raycast(ray, out hitInfo))
-                {
-                    total = total + 1;
+                    }
+                    Debug.Log(volumes);
+                    Debug.Log(k);
+                    GameObject cube = CubeManaging.GetCubeinArray(k);
+                    Mesh someMesh = cube.GetComponent<MeshFilter>().mesh;
+                    Bounds b = someMesh.bounds;
+                    Vector3 max = b.max;
+                    Vector3 min = b.max;
+                    Debug.Log("MAX"+max);
+                    Debug.Log("MIN"+min);
+                    Vector3 point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+                    while (!someMesh.bounds.Contains(point))
+                    {
+                        point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+                    }
+                    //Instantiate(prefab, point, Quaternion.identity);*/
+                    Ray ray = new Ray(transform.position, randomXY);
+                    //Ray ray = new Ray(transform.position, new Vector3(0, 1, 0));
+                    //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
+                    RaycastHit hitInfo;
                     //Physics.Raycast(ray, out hitInfo);
-                    //Debug.Log(hitInfo.triangleIndex);
-                    //MeshCollider meshCollider = hitInfo.collider as MeshCollider;
-                    /* (meshCollider == null || meshCollider.sharedMesh == null)
-                        break;*/
+                    /*if (Physics.Raycast(ray, out hitInfo))
+                    {
+                     total = total + 1;
+                    }*/
+                    //Part del codi per a retornar el triangle amb el que ha colisionat
+                    if (Physics.Raycast(ray, out hitInfo))
+                    {
+                        total += 1;
+                        //Physics.Raycast(ray, out hitInfo);
+                        //Debug.Log(hitInfo.triangleIndex);
+                        //MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                        /* (meshCollider == null || meshCollider.sharedMesh == null)
+                            break;*/
 
-                    /* Mesh mesh = meshCollider.sharedMesh;
-                     Vector3[] vertices = mesh.vertices;
-                     int[] triangles = mesh.triangles;
-                     Vector3 p0 = vertices[triangles[hitInfo.triangleIndex * 3 + 0]];
-                     Vector3 p1 = vertices[triangles[hitInfo.triangleIndex * 3 + 1]];
-                     Vector3 p2 = vertices[triangles[hitInfo.triangleIndex * 3 + 2]];
-                     Transform hitTransform = hitInfo.collider.transform;
-                     p0 = hitTransform.TransformPoint(p0);
-                     p1 = hitTransform.TransformPoint(p1);
-                     p2 = hitTransform.TransformPoint(p2);
-                     Debug.DrawLine(p0, p1, Color.blue, 500);
-                     Debug.DrawLine(p1, p2, Color.blue, 500);
-                     Debug.DrawLine(p2, p0, Color.blue, 500);*/
-                    findedTriangles[hitInfo.triangleIndex] = true;
+                        /* Mesh mesh = meshCollider.sharedMesh;
+                         Vector3[] vertices = mesh.vertices;
+                         int[] triangles = mesh.triangles;
+                         Vector3 p0 = vertices[triangles[hitInfo.triangleIndex * 3 + 0]];
+                         Vector3 p1 = vertices[triangles[hitInfo.triangleIndex * 3 + 1]];
+                         Vector3 p2 = vertices[triangles[hitInfo.triangleIndex * 3 + 2]];
+                         Transform hitTransform = hitInfo.collider.transform;
+                         p0 = hitTransform.TransformPoint(p0);
+                         p1 = hitTransform.TransformPoint(p1);
+                         p2 = hitTransform.TransformPoint(p2);
+                         Debug.DrawLine(p0, p1, Color.blue, 500);
+                         Debug.DrawLine(p1, p2, Color.blue, 500);
+                         Debug.DrawLine(p2, p0, Color.blue, 500);*/
+                        if (findedTriangles[hitInfo.triangleIndex] == false)
+                        {
+                            findedTriangles[hitInfo.triangleIndex] = true;
+                            lasthitround = 1;
+                        }
+                        else
+                        {
+                            lasthitround += 1;
+                        }
+                    }
+                    else
+                    {
+                        lasthitround += 1;
+                    }
                 }
             }
             chrono.Stop();
 
             Debug.Log("Total Hits " + total);
             Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
+            Debug.Log("Rounds without hit " + lasthitround);
 
             //set new triangles
             int painted = 0;
@@ -248,5 +269,24 @@ public class CameraController : MonoBehaviour {
             p_Velocity += new Vector3(0, 1, 0);
         }
         return p_Velocity;
+    }
+
+    public void WhenLoaded() {
+        //boundingBox = loadedObj.GetComponentInChildren<Renderer>().GetComponentInChildren<Renderer>().bounds;
+        boundingBox = loadedObj.GetComponentInChildren<Renderer>().bounds;
+
+        originalPos = boundingBox.max;
+        originalCenter = boundingBox.center;
+        transform.position = originalPos;
+        transform.LookAt(originalCenter);
+
+        //amb el objecte ja carregat
+        ots = loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles;
+        nTriangles = ots.Length / 3;
+        findedTriangles = new bool[nTriangles];
+        nts = new int[nTriangles * 3];
+        Debug.Log(ots[0]);
+        Debug.Log(findedTriangles.Length);
+        Debug.Log(findedTriangles[0]);
     }
 }
