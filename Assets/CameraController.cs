@@ -53,7 +53,7 @@ public class CameraController : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.T))
         {
-            int loop = 1000000;
+            int loop = 100000;
 
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
@@ -74,7 +74,7 @@ public class CameraController : MonoBehaviour {
                     //Debug.Log(randomXY);
                     //Debug.Log(sphere.transform.position);
                     //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
-                    /*float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
+                    float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
                     ArrayList volumes = CubeManaging.GetVolumesArray();
                     Debug.Log("randV"+randvolume);
                     int k = 0;
@@ -92,19 +92,20 @@ public class CameraController : MonoBehaviour {
                     Debug.Log(volumes);
                     Debug.Log(k);
                     GameObject cube = CubeManaging.GetCubeinArray(k);
-                    Mesh someMesh = cube.GetComponent<MeshFilter>().mesh;
-                    Bounds b = someMesh.bounds;
+                    Bounds b = cube.GetComponent<Collider>().bounds;
+                    //Bounds b = someMesh.bounds;
                     Vector3 max = b.max;
-                    Vector3 min = b.max;
+                    Vector3 min = b.min;
                     Debug.Log("MAX"+max);
                     Debug.Log("MIN"+min);
                     Vector3 point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
-                    while (!someMesh.bounds.Contains(point))
+                    while (!b.Contains(point))
                     {
                         point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
                     }
                     //Instantiate(prefab, point, Quaternion.identity);*/
-                    Ray ray = new Ray(transform.position, randomXY);
+                    Ray ray = new Ray(point, randomXY);
+                    //Ray ray = new Ray(transform.position, randomXY);
                     //Ray ray = new Ray(transform.position, new Vector3(0, 1, 0));
                     //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
                     RaycastHit hitInfo;

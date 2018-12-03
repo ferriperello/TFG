@@ -11,6 +11,7 @@ public class CubeManaging : MonoBehaviour {
     private Vector3 minx;
     private Vector3 maxx;
     private Vector3 height;
+    private float triangleHeight;
 
     public GameObject cube;
     public Camera camera;
@@ -29,6 +30,7 @@ public class CubeManaging : MonoBehaviour {
         maxx = new Vector3(0, 0, 0);
         cubes = new ArrayList();
         volumes = new ArrayList();
+        triangleHeight = 10.0f;
         totalVolume = 0;
         string filePath = Menu_Manager.GetFilePath();
         Debug.Log("NEW SCENE");
@@ -71,8 +73,8 @@ public class CubeManaging : MonoBehaviour {
             //Debug.Log(spawnPosition.ToString());
             //GameObject newCube = Instantiate(cube, spawnPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
             Debug.Log("NOT");
-            this.transform.position = camera.ScreenToWorldPoint(Input.mousePosition);
-            ray = camera.ScreenPointToRay(Input.mousePosition);
+            this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray,out hit))
             {
                 minx = hit.point;
@@ -94,7 +96,7 @@ public class CubeManaging : MonoBehaviour {
         if (Input.GetMouseButtonDown(0) & creating & maxx.Equals(new Vector3(0, 0, 0)))
         {
             Debug.Log("CREAT");
-            ray = camera.ScreenPointToRay(Input.mousePosition);
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
                 maxx = hit.point;
@@ -120,14 +122,15 @@ public class CubeManaging : MonoBehaviour {
             Debug.Log("Maxx y = " + maxx.y);
             Debug.Log("Minx y = " + minx.y);
             Debug.Log("Min y = " + newpos.y);
-            Debug.Log("Min y / 2 = " + newpos.y / 2);
+            Debug.Log("THeight y / 2 = " + triangleHeight / 2);
             
-            Debug.Log("Min y = "+newpos.y);
+           
             
             //newCube.transform.LookAt(maxx);
             newCube.transform.localScale = new Vector3(Mathf.Abs(betweenX), 10f, Mathf.Abs(betweenZ));
-            newpos.y += (newpos.y / 2);
+            newpos.y += (triangleHeight/2);
             newCube.transform.position = newpos;
+            Debug.Log("Min y = " + newpos.y);
 
             float cubevolume = newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z;
             cubes.Add(newCube);
