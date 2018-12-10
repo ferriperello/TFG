@@ -21,7 +21,10 @@ public class CameraController : MonoBehaviour {
     public bool[] findedTriangles;
     public int[] nts;
     public int[] ots;
+    public int nVertex;
     public int nTriangles;
+
+    public Dictionary<int, List<int>> neighboursinfo = new Dictionary<int, List<int>>();
 
     public GameObject prefab;
 
@@ -38,13 +41,16 @@ public class CameraController : MonoBehaviour {
 
         //amb el objecte ja carregat
         ots = loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles;
-        nTriangles = ots.Length/3;
+        nVertex = ots.Length;
+        nTriangles = nVertex/3;
         findedTriangles = new bool[nTriangles];
         nts = new int[nTriangles * 3];
         Debug.Log(ots[0]);
         Debug.Log(findedTriangles.Length);
         Debug.Log(findedTriangles[0]);
         //loadedObj.GetComponentInChildren<MeshFilter>().GetComponentInChildren<MeshFilter>().mesh.triangles =  nts;
+
+        FindNeightbours();
 
     }
 
@@ -289,5 +295,24 @@ public class CameraController : MonoBehaviour {
         Debug.Log(ots[0]);
         Debug.Log(findedTriangles.Length);
         Debug.Log(findedTriangles[0]);
+    }
+
+    private void FindNeightbours() {
+        Debug.Log("entro al Diccionari!");
+        for (int i = 0; i < 4; i++)
+        {
+            if (!neighboursinfo.ContainsKey(ots[i]))
+            {
+                neighboursinfo.Add(ots[i], new List<int> { i / 3 });
+            }
+            else
+            {
+                List<int> aux = neighboursinfo[ots[i]];
+                //aux[aux.Length + 1] = i / 3;
+                aux.Add(i / 3);
+                neighboursinfo[ots[i]] = aux;
+            }
+        }
+        Debug.Log(neighboursinfo.Keys);
     }
 }

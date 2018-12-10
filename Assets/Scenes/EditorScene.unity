@@ -1038,7 +1038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressText: {fileID: 210545379}
   progressSlider: {fileID: 2110234297}
-  progressImage: {fileID: 881702679}
+  progressImage: {fileID: 0}
 --- !u!4 &1723135237
 Transform:
   m_ObjectHideFlags: 0
