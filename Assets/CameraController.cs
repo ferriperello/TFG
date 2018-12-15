@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour {
     public int[] ots;
     public int nVertex;
     public int nTriangles;
+    int lastIndexnts;
 
     public Dictionary<int, List<int>> neighboursinfo = new Dictionary<int, List<int>>();
 
@@ -49,9 +50,6 @@ public class CameraController : MonoBehaviour {
         Debug.Log(findedTriangles.Length);
         Debug.Log(findedTriangles[0]);
         //loadedObj.GetComponentInChildren<MeshFilter>().GetComponentInChildren<MeshFilter>().mesh.triangles =  nts;
-
-        FindNeightbours();
-
     }
 
     // Update is called once per frame
@@ -179,6 +177,7 @@ public class CameraController : MonoBehaviour {
                 }
             }
             loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = nts;
+            lastIndexnts = j;
             Debug.Log("Painted Triangles = " + painted);
             Debug.Log("Descarted Triangles = " + (nTriangles - painted));
             Debug.Log("Of a total of " + nTriangles + " Triangles");
@@ -193,7 +192,8 @@ public class CameraController : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.Y))
         {
-            Start();
+            //Start();
+            ExpandNTimes(1);
         }
 
         if (Input.GetKey(KeyCode.Q))
@@ -289,17 +289,21 @@ public class CameraController : MonoBehaviour {
 
         //amb el objecte ja carregat
         ots = loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles;
-        nTriangles = ots.Length / 3;
+        nVertex = ots.Length;
+        nTriangles = nVertex / 3;
         findedTriangles = new bool[nTriangles];
         nts = new int[nTriangles * 3];
         Debug.Log(ots[0]);
         Debug.Log(findedTriangles.Length);
         Debug.Log(findedTriangles[0]);
+
+        FindNeightbours();
     }
 
     private void FindNeightbours() {
+        var chrono = System.Diagnostics.Stopwatch.StartNew();
         Debug.Log("entro al Diccionari!");
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < nVertex; i++)
         {
             if (!neighboursinfo.ContainsKey(ots[i]))
             {
@@ -313,6 +317,63 @@ public class CameraController : MonoBehaviour {
                 neighboursinfo[ots[i]] = aux;
             }
         }
-        Debug.Log(neighboursinfo.Keys);
+        /*
+        foreach (KeyValuePair<int, List<int>> kvp in neighboursinfo)
+        {
+            Debug.Log("Key = {0} + Value = {1}" + kvp.Key + ": ");
+            foreach (int i in kvp.Value)
+            {
+                Debug.Log(i);
+            }
+        }*/
+        chrono.Stop();
+        Debug.Log("Bucle total, # de iteracions = " + nVertex);
+        Debug.Log("Numero de Claus creades : " + neighboursinfo.Keys.Count);
+        Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
+        Debug.Log("Final de creació del Map");
+    }
+
+    private void ExpandNTimes(int n)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            DoExpansion();
+        }
+    }
+    
+    private void DoExpansion()
+    {
+        //tenint els nous triangles visibles des del punt, fem visibles tots els seus veins (comparteixen un vertex)
+        int[] auxnts = nts;
+        bool[] auxfinded = findedTriangles;
+        int l = lastIndexnts;
+        for (int i = 0; i < nTriangles; i++)
+        {
+            if (findedTriangles[i])
+            {
+                auxfinded[i] = true;
+                //mirar els vehins dels 3 vertex
+                for (int j = 0; j < 3; ++j)
+                {
+                    int v = ots[(i * 3) + j];
+                    List<int> neighb = neighboursinfo[v];
+                    for (int k = 0; k < neighb.Count; ++k) {
+                        if (!findedTriangles[k])
+                        {
+                            auxfinded[k] = true;
+                            auxnts[l] = ots[i * 3];
+                            auxnts[l + 1] = ots[(i * 3) + 1];
+                            auxnts[l + 2] = ots[(i * 3) + 2];
+                            l += 3;
+                        }
+                    }
+                }
+
+            }
+        }
+        findedTriangles = auxfinded;
+        nts = auxnts;
+        lastIndexnts = l;
+        loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = nts;
     }
 }

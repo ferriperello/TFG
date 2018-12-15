@@ -41,7 +41,6 @@ public class ObjectLoader : MonoBehaviour {
         {
             print("ON IMPORT COMPLETE");
             base.OnImportingComplete();
-            Camera.main.GetComponent<CameraController>().WhenLoaded();
         }
     }
 }
