@@ -25,7 +25,7 @@ public class RayTestingScript : MonoBehaviour {
         
         if (Input.GetKey(KeyCode.T))
         {
-            int loop = 100000000;
+            int loop = 10000;
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
             double total = 0;
@@ -44,7 +44,7 @@ public class RayTestingScript : MonoBehaviour {
                 if (Physics.Raycast(ray, out hitInfo))
                 {
                     total = total + 1;
-                    if (total % 10000000 == 0)
+                    if (total % 1000 == 0)
                     {
                         GameObject newCube = Instantiate(cube, new Vector3(0, 0, 0), Quaternion.identity);
                         newCube.transform.localScale = new Vector3(10f, 10f, 10f);
@@ -78,6 +78,34 @@ public class RayTestingScript : MonoBehaviour {
             chrono.Stop();
             Debug.Log("Total Hits " + total);
             Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
+
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            Physics.queriesHitBackfaces = true;
+
+            Debug.Log(Physics.queriesHitBackfaces);
+            Debug.Log("Intento el raig");
+            Ray ray = new Ray(transform.position,new Vector3(0,0,1));
+            //Physics.Raycast(ray, out hitInfo);
+            RaycastHit hitInfo;
+            //Physics.Raycast(ray, out hitInfo);
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                Debug.Log("HIT");
+                GameObject newCube = Instantiate(cube, new Vector3(0, 0, 0), Quaternion.identity);
+                newCube.transform.localScale = new Vector3(10f, 10f, 10f);
+                newCube.transform.position = hitInfo.point;
+            }
+            else
+            {
+                Debug.Log(hitInfo.point);
+                Debug.Log("FAIL");
+            }
+
+
+            Physics.queriesHitBackfaces = false;
 
         }
 
