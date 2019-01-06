@@ -69,17 +69,6 @@ public class CameraController : MonoBehaviour {
             ExpandNTimes(1);
         }
 
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(0, 0, 0.5f);
-            up_orientation += 0.5f;
-        }
-        else if (Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(0, 0, -0.5f);
-            up_orientation -= 0.5f;
-        }
-
         if (Input.GetMouseButton(1))
         {
             transform.Rotate(new Vector3(Input.GetAxis("Mouse Y") * 2.5f, -Input.GetAxis("Mouse X") * 2.5f, 0));
@@ -108,7 +97,6 @@ public class CameraController : MonoBehaviour {
             totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
             p = p * mainSpeed;
         }
-
         p = p * Time.deltaTime;
         transform.Translate(p);
     }
@@ -136,9 +124,17 @@ public class CameraController : MonoBehaviour {
             p_Velocity += new Vector3(1, 0, 0);
         }
         //Q --> angle cap a esq.
-
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.Rotate(0, 0, 0.5f);
+            up_orientation += 0.5f;
+        }
         //E --> angle cap a dre.
-
+        else if (Input.GetKey(KeyCode.E))
+        {
+            transform.Rotate(0, 0, -0.5f);
+            up_orientation -= 0.5f;
+        }
         //Z --> Y down
         if (Input.GetKey(KeyCode.Z)){
             p_Velocity += new Vector3(0, -1, 0);
