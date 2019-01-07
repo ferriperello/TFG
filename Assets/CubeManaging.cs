@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CubeManaging : MonoBehaviour {
     public static ArrayList cubes;
@@ -23,6 +25,10 @@ public class CubeManaging : MonoBehaviour {
     Ray ray;
     RaycastHit hit;
 
+    public GameObject CubeCanvas;
+    public Text newheight;
+    private bool togglecanvas = false;
+
     // Use this for initialization
     void Start () {
         creating = false;
@@ -32,31 +38,7 @@ public class CubeManaging : MonoBehaviour {
         volumes = new ArrayList();
         triangleHeight = 10.0f;
         totalVolume = 0;
-        string filePath = Menu_Manager.GetFilePath();
-        Debug.Log("NEW SCENE");
-        Debug.Log(filePath);
-        if (filePath != "")
-        {
-            /*Debug.Log("Carreguem nou OBJ");
-            var chrono = System.Diagnostics.Stopwatch.StartNew();
-            loadedObject = OBJLoader.LoadOBJFile(filePath);
-            loadedObject.transform.position = new Vector3(500, 0, 500);
-            
-            Mesh mesh = loadedObject.GetComponentInChildren<MeshFilter>().mesh;
-            Transform[] mfl = loadedObject.GetComponentsInChildren<Transform>(false);
-            MeshCollider meshCollider =  mfl[1].gameObject.AddComponent<MeshCollider>();
-
-
-            meshCollider.sharedMesh = mesh;
-
-            chrono.Stop();
-            Debug.Log("Total Time Carrega" + chrono.ElapsedMilliseconds);
-            ots = loadedObject.GetComponentInChildren<MeshFilter>().mesh.triangles;
-            nTriangles = ots.Length / 3;
-            Debug.Log("triangles: " + nTriangles);*/
-
-        }
-
+        newheight.text = triangleHeight.ToString();
     }
 
     // Update is called once per frame
@@ -66,25 +48,26 @@ public class CubeManaging : MonoBehaviour {
         {
             creating = false;
         }
-
-        if (Input.GetMouseButtonDown(0) & !creating)
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            //Vector3 spawnPosition = camera.ScreenToWorldPoint(Input.mousePosition);
-            //Debug.Log(spawnPosition.ToString());
-            //GameObject newCube = Instantiate(cube, spawnPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
-            Debug.Log("NOT");
-            this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray,out hit))
+            if (Input.GetMouseButtonDown(0) & !creating)
             {
-                minx = hit.point;
-                //Debug.Log(minx.ToString());
+                //Vector3 spawnPosition = camera.ScreenToWorldPoint(Input.mousePosition);
+                //Debug.Log(spawnPosition.ToString());
+                //GameObject newCube = Instantiate(cube, spawnPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
+                Debug.Log("NOT");
+                this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    minx = hit.point;
+                    //Debug.Log(minx.ToString());
+                    creating = true;
+                    //GameObject newCube = Instantiate(cube, new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z), Quaternion.identity);
+                }
                 creating = true;
-                //GameObject newCube = Instantiate(cube, new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z), Quaternion.identity);
             }
-            creating = true;
         }
-
         if (Input.GetKey(KeyCode.LeftShift) & Input.GetMouseButtonDown(0))
         {
             Debug.Log("CREATING");
@@ -127,7 +110,7 @@ public class CubeManaging : MonoBehaviour {
            
             
             //newCube.transform.LookAt(maxx);
-            newCube.transform.localScale = new Vector3(Mathf.Abs(betweenX), 10f, Mathf.Abs(betweenZ));
+            newCube.transform.localScale = new Vector3(Mathf.Abs(betweenX), triangleHeight, Mathf.Abs(betweenZ));
             newpos.y += (triangleHeight/2);
             newCube.transform.position = newpos;
             Debug.Log("Min y = " + newpos.y);
@@ -160,5 +143,27 @@ public class CubeManaging : MonoBehaviour {
     public static GameObject GetCubeinArray(int i)
     {
         return (GameObject)cubes[i];
+    }
+
+    public void ToggleCanvas()
+    {
+        if (togglecanvas)
+        {
+            CubeCanvas.SetActive(false);
+            togglecanvas = false;
+            newheight.text = triangleHeight.ToString();
+        }
+        else
+        {
+            CubeCanvas.SetActive(true);
+            togglecanvas = true;
+            newheight.text = triangleHeight.ToString();
+        }
+
+    }
+
+    public void changeHeigth()
+    {
+        triangleHeight = float.Parse(newheight.text);
     }
 }

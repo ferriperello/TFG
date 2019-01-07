@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AsImpL;
+using UnityEngine.UI;
 
 public class ObjectLoader : MonoBehaviour {
 
@@ -9,18 +10,14 @@ public class ObjectLoader : MonoBehaviour {
     public ImportOptions importOptions = new ImportOptions();
     private ObjectImporter objImporter;
     private bool firstLoad = false;
+    private static string filePath;
+    private static bool fpdone = false;
+    public Text progressText;
+    public GameObject loadButton;
 
     // Use this for initialization
     void Start () {
-        string filePath = Menu_Manager.GetFilePath();
-        Debug.Log("LOADER");
-        Debug.Log(filePath);
-        objImporter = loadedObject.AddComponent<ObjectImporter>();
-        importOptions.buildColliders = true;
-
-        objImporter.ImportModelAsync("loadedObject", filePath, loadedObject.transform, importOptions);
-        firstLoad = true;
-        //objImporter.ImportFile(filePath, loadedObject.transform, importOptions);  
+        
     }
 	
 	// Update is called once per frame
@@ -31,7 +28,16 @@ public class ObjectLoader : MonoBehaviour {
             {
                 Camera.main.GetComponent<CameraController>().WhenLoaded();
                 firstLoad = false;
+                StartCoroutine(wait());
+                progressText.enabled = false;
+                loadButton.SetActive(false);
             }
+        }
+
+        if (fpdone)
+        {
+            loadObject();
+            fpdone = false;
         }
     }
 
@@ -41,7 +47,27 @@ public class ObjectLoader : MonoBehaviour {
         {
             print("ON IMPORT COMPLETE");
             base.OnImportingComplete();
+
         }
+    }
+
+    public void loadObject() {
+        firstLoad = true;
+        objImporter = loadedObject.AddComponent<ObjectImporter>();
+        importOptions.buildColliders = true;
+        objImporter.ImportModelAsync("loadedObject", filePath, loadedObject.transform, importOptions);
+        
+    }
+
+    public static void setFilepath(string fp)
+    {
+        filePath = fp;
+        fpdone = true;
+    }
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(5);
     }
 }
 

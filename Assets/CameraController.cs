@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AsImpL;
-
+using UnityEngine.UI;
+using System;
 
 public class CameraController : MonoBehaviour {
 
@@ -25,33 +26,24 @@ public class CameraController : MonoBehaviour {
     public int nVertex;
     public int nTriangles;
 
+    private int loopNumber = 1;
+
     public Dictionary<int, List<int>> neighboursinfo = new Dictionary<int, List<int>>();
     public Dictionary<Vector3, List<int>> vertexinfo = new Dictionary<Vector3, List<int>>();
 
     public GameObject prefab;
+    public Text progressText;
+
+    public GameObject ExpansionCanvas;
+    public Text newnumloops;
+    private bool toggleLoopcanvas = false;
+
+    public Text errorText;
 
     // Use this for initialization
     void Start()
     {
-        //boundingBox = loadedObj.GetComponentInChildren<Renderer>().GetComponentInChildren<Renderer>().bounds;
-        boundingBox = loadedObj.GetComponentInChildren<Renderer>().bounds;
-
-        originalPos = boundingBox.max;
-        originalCenter = boundingBox.center;
-        transform.position = originalPos;
-        transform.LookAt(originalCenter);
-
-        //amb el objecte ja carregat
-        ots = loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles;
-        ovs = loadedObj.GetComponentInChildren<MeshFilter>().mesh.vertices;
-        nVertex = ots.Length;
-        nTriangles = nVertex/3;
-        findedTriangles = new bool[nTriangles];
-        nts = new int[nTriangles * 3];
-        Debug.Log(ots[0]);
-        Debug.Log(findedTriangles.Length);
-        Debug.Log(findedTriangles[0]);
-        //loadedObj.GetComponentInChildren<MeshFilter>().GetComponentInChildren<MeshFilter>().mesh.triangles =  nts;
+        newnumloops.text = loopNumber.ToString();
     }
 
     // Update is called once per frame
@@ -66,7 +58,7 @@ public class CameraController : MonoBehaviour {
         if (Input.GetKey(KeyCode.Y))
         {
             //Start();
-            ExpandNTimes(1);
+            ExpandNTimes();
         }
 
         if (Input.GetMouseButton(1))
@@ -157,6 +149,7 @@ public class CameraController : MonoBehaviour {
         transform.LookAt(originalCenter);
 
         //amb el objecte ja carregat
+        //aixo haurien de ser copies??
         ots = loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles;
         ovs = loadedObj.GetComponentInChildren<MeshFilter>().mesh.vertices;
         nVertex = ots.Length;
@@ -246,11 +239,11 @@ public class CameraController : MonoBehaviour {
             {
                 if (i % 1000 == 0) Debug.Log("Iteració : " + i);
                 //Vector3 randomXY = Random.rotation.eulerAngles;
-                Vector3 randomXY = Random.insideUnitSphere;
+                Vector3 randomXY = UnityEngine.Random.insideUnitSphere;
                 //Debug.Log(randomXY);
                 //Debug.Log(sphere.transform.position);
                 //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
-                float randvolume = Random.Range(0.0f, CubeManaging.GetTotalVolume());
+                float randvolume = UnityEngine.Random.Range(0.0f, CubeManaging.GetTotalVolume());
                 ArrayList volumes = CubeManaging.GetVolumesArray();
                 Debug.Log("randV" + randvolume);
                 int k = 0;
@@ -274,10 +267,10 @@ public class CameraController : MonoBehaviour {
                 Vector3 min = b.min;
                 Debug.Log("MAX" + max);
                 Debug.Log("MIN" + min);
-                Vector3 point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+                Vector3 point = new Vector3(UnityEngine.Random.Range(min.x, max.x), UnityEngine.Random.Range(min.y, max.y), UnityEngine.Random.Range(min.z, max.z));
                 while (!b.Contains(point))
                 {
-                    point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+                    point = new Vector3(UnityEngine.Random.Range(min.x, max.x), UnityEngine.Random.Range(min.y, max.y), UnityEngine.Random.Range(min.z, max.z));
                 }
                 //Instantiate(prefab, point, Quaternion.identity);*/
                 Ray ray = new Ray(point, randomXY);
@@ -357,13 +350,23 @@ public class CameraController : MonoBehaviour {
     }
 
 
-    public void ExpandNTimes(int n)
+    public void ExpandNTimes()
     {
-        for (int i = 0; i < n; i++)
+        try
         {
-            Debug.Log("FAIG EXPANSIO");
-            DoExpansion();
+            for (int i = 0; i < loopNumber; i++)
+            {
+                Debug.Log("FAIG EXPANSIO");
+                DoExpansion();
+            }
         }
+        catch (NullReferenceException e)
+        {
+            errorText.text = "CAN'T DO EXPANSION";
+            StartCoroutine(wait());
+            errorText.text = "";
+        }
+        
     }
     
     private void DoExpansion()
@@ -430,5 +433,32 @@ public class CameraController : MonoBehaviour {
         findedTriangles = (bool[])auxfinded.Clone();
         nts = (int[])auxnts.Clone();
         loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = (int[])nts.Clone();
+    }
+
+    public void ToggleLoopCanvas()
+    {
+        if (toggleLoopcanvas)
+        {
+            ExpansionCanvas.SetActive(false);
+            toggleLoopcanvas = false;
+            newnumloops.text = loopNumber.ToString();
+        }
+        else
+        {
+            ExpansionCanvas.SetActive(true);
+            toggleLoopcanvas = true;
+            newnumloops.text = loopNumber.ToString();
+        }
+
+    }
+
+    public void changeLoopNumber()
+    {
+        loopNumber = int.Parse(newnumloops.text);
+    }
+
+    IEnumerator wait()
+    {
+        yield return new WaitForSeconds(5);
     }
 }

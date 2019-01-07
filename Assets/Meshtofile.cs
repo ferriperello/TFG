@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 public class Meshtofile : MonoBehaviour {
 
@@ -12,8 +13,12 @@ public class Meshtofile : MonoBehaviour {
     private const string DEFAULT_MESH_NAME = "Mesh";
     private Mesh mesh;
     private Material material;
-    private String path;
+    private static string path;
     public GameObject GO;
+    public Text progressText;
+    public GameObject saveButton;
+
+    private static bool pathSet = false;
 
     public void setMesh(Mesh m)
     {
@@ -25,9 +30,11 @@ public class Meshtofile : MonoBehaviour {
         material = m;
     }
 
-    public void setpath(string p)
+    public static void setpath(string p)
     {
         path = p;
+        pathSet = true;
+        Debug.Log(path);
     }
 
     public void StartSave()
@@ -35,7 +42,7 @@ public class Meshtofile : MonoBehaviour {
         Debug.Log("ENTRO");
         mesh = GO.GetComponentInChildren<MeshFilter>().mesh;
         material = GO.GetComponentInChildren<MeshRenderer>().material;
-        path = "C:/Users/ferra/Documents/TFG/exportTry/";
+        //path = "C:/Users/ferra/Documents/TFG/exportTry/";
         Save(mesh, material, path);
         Debug.Log("DONE");
     }
@@ -227,8 +234,38 @@ public class Meshtofile : MonoBehaviour {
 
         return sb.ToString();
     }
-    void Update()
+
+    private bool checkSave()
     {
 
+        try {
+            mesh = GO.GetComponentInChildren<MeshFilter>().mesh;
+            material = GO.GetComponentInChildren<MeshRenderer>().material;
+        }
+        catch (NullReferenceException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    void Update()
+    {
+        if (checkSave())
+        {
+            if (pathSet)
+            {
+                pathSet = false;
+                StartSave();
+            }
+            else
+            {
+                //Debug.Log("False pathset");
+                saveButton.SetActive(true);
+            }
+        }
+        else {
+            saveButton.SetActive(false);
+        }
     }
 }
