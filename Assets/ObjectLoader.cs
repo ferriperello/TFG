@@ -26,7 +26,8 @@ public class ObjectLoader : MonoBehaviour {
         {
             if (objImporter.AllImported)
             {
-                Camera.main.GetComponent<CameraController>().WhenLoaded();
+                Camera.main.GetComponent<CameraController>().WhenLoadedCamera();
+                RayTracing_Expansion.WhenLoadedRT();
                 firstLoad = false;
                 StartCoroutine(wait());
                 progressText.enabled = false;

@@ -14,6 +14,7 @@ public class Meshtofile : MonoBehaviour {
     private Mesh mesh;
     private Material material;
     private static string path;
+    private int triangleSize;
     public GameObject GO;
     public Text progressText;
     public GameObject saveButton;
@@ -34,12 +35,12 @@ public class Meshtofile : MonoBehaviour {
     {
         path = p;
         pathSet = true;
-        Debug.Log(path);
     }
 
     public void StartSave()
     {
         Debug.Log("ENTRO");
+        triangleSize = RayTracing_Expansion.GetTriangleSize();
         mesh = GO.GetComponentInChildren<MeshFilter>().mesh;
         material = GO.GetComponentInChildren<MeshRenderer>().material;
         //path = "C:/Users/ferra/Documents/TFG/exportTry/";
@@ -78,12 +79,19 @@ public class Meshtofile : MonoBehaviour {
 
     public string GetObjFileContent()
     {
-        Vector3[] vertices = mesh.vertices;
-        Vector3[] normals = mesh.normals;
+
+        //Vector3[] vertices = mesh.vertices;
+        //Vector3[] vertices = CalculateVertices();
+        Vector3[] vertices = new Vector3[triangleSize];
+        Vector3[] normals =  new Vector3[triangleSize];
+        CalculateVertices(vertices, normals);
+
+        //Vector3[] normals = mesh.normals;
         Vector2[] uvCoords = mesh.uv;
         int[] triangles = mesh.triangles;
 
         string header = CreateHeader(mesh.name);
+        //crear llista de vertex a partir dels triangles
         string verticesList = ListVertices(vertices);
         string textureCoordsList = ListTextureCoords(uvCoords);
         string normalsList = ListNormals(normals);
@@ -92,10 +100,10 @@ public class Meshtofile : MonoBehaviour {
 
         string s = new StringBuilder()
             .Append(header)
+            .Append(materialRefs)
             .Append(verticesList)
             .Append(textureCoordsList)
             .Append(normalsList)
-            .Append(materialRefs)
             .Append(facesList)
             .ToString();
         return s;
@@ -157,7 +165,7 @@ public class Meshtofile : MonoBehaviour {
     {
         StringBuilder sb = new StringBuilder();
         sb.Append("# Faces list").Append("\n");
-        for (int i = 0; i < triangles.Length - 2; i += 3)
+        for (int i = 0; i < triangleSize - 2; i += 3)
         {
             sb.AppendFormat("f {0}/{1}/{2} {3}/{4}/{5} {6}/{7}/{8}",
                 (triangles[i + 2] + 1).ToString(),
@@ -233,6 +241,20 @@ public class Meshtofile : MonoBehaviour {
         sb.AppendFormat("Tr {0}", 1 - mainColor.a).Append("\n");
 
         return sb.ToString();
+    }
+
+    private Vector3[] CalculateVertices(Vector3[] finalvertex, Vector3[] finalnormals)
+    {
+        int[] triangles = mesh.triangles;
+        Vector3[] vertex = mesh.vertices;
+        Vector3[] normals = mesh.normals;
+        for (int i=0; i < triangleSize; i++)
+        {
+            //Debug.Log(triangles[i]);
+            finalvertex[i] = vertex[triangles[i]];
+            finalnormals[i] = normals[triangles[i]];
+        }
+        return finalvertex;
     }
 
     private bool checkSave()
