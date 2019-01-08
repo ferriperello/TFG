@@ -162,7 +162,7 @@ public class CubeManaging : MonoBehaviour {
 
     }
 
-    public void changeHeigth()
+    public void ChangeHeigth()
     {
         triangleHeight = float.Parse(newheight.text);
     }

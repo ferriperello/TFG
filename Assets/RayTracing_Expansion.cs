@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ public class RayTracing_Expansion : MonoBehaviour {
     public Text progressText;
 
     //Ray Tracing
-    public bool[] findedTriangles;
+    public static bool[] findedTriangles;
     public int[] nts;
     public int[] ots;
     public Vector3[] ovs;
@@ -65,7 +66,8 @@ public class RayTracing_Expansion : MonoBehaviour {
         nVertex = ots.Length;
         nTriangles = nVertex / 3;
         ntsSize = ots.Length;
-        findedTriangles = new bool[nTriangles];
+        //findedTriangles = new bool[nTriangles];
+        findedTriangles = Enumerable.Repeat(true, nTriangles).ToArray<bool>();
         nts = new int[nTriangles * 3];
         Debug.Log(ots[0]);
         Debug.Log(findedTriangles.Length);
@@ -436,6 +438,12 @@ public class RayTracing_Expansion : MonoBehaviour {
     {
         return ntsSize; 
     }
+
+    public static bool[] GetFindedTriangles()
+    {
+        return findedTriangles;
+    }
+    
 
     IEnumerator Wait()
     {

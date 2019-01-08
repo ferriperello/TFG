@@ -1177,7 +1177,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2084208132}
-        m_MethodName: changeHeigth
+        m_MethodName: ChangeHeigth
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1701,7 +1701,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2084208132}
-        m_MethodName: changeHeigth
+        m_MethodName: ChangeHeigth
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4145,6 +4145,7 @@ GameObject:
   - component: {fileID: 1414097215}
   - component: {fileID: 1414097216}
   - component: {fileID: 1414097217}
+  - component: {fileID: 1414097218}
   m_Layer: 5
   m_Name: Exporter
   m_TagString: Untagged
@@ -4195,6 +4196,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c05c2c0243035b41a8658a03d22678f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1414097218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1414097214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d1b5b6992afaf40a3ebc06e59beed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GO: {fileID: 1393274164}
+  progressText: {fileID: 210545379}
+  saveButton: {fileID: 2101166820}
+  findedTriangles: 
 --- !u!1 &1433269131
 GameObject:
   m_ObjectHideFlags: 0
@@ -5464,7 +5480,6 @@ MonoBehaviour:
   loadedObj: {fileID: 1393274164}
   errorText: {fileID: 1668415359}
   progressText: {fileID: 210545379}
-  findedTriangles: 
   nts: 
   ots: 
   ovs: []
