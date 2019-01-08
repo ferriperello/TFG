@@ -44,7 +44,7 @@ public class Menu_Manager : MonoBehaviour {
         if (FileBrowser.Success)
         {
             filePath = FileBrowser.Result;
-            ObjectLoader.setFilepath(filePath);
+            ObjectLoader.SetFilepath(filePath);
         }
         
     }
@@ -67,7 +67,7 @@ public class Menu_Manager : MonoBehaviour {
         if (FileBrowser.Success)
         {
             filePath = FileBrowser.Result;
-            ExportTrianglesandCubes.SetPath(filePath+"\\");
+            ExportTrianglesandCubes.SetExportPath(filePath+"\\");
 
         }
     }

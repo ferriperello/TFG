@@ -21,17 +21,17 @@ public class Meshtofile : MonoBehaviour {
 
     private static bool pathSet = false;
 
-    public void setMesh(Mesh m)
+    public void SetMesh(Mesh m)
     {
         mesh = m;
     }
 
-    public void setMat(Material m)
+    public void SetMat(Material m)
     {
         material = m;
     }
 
-    public static void setpath(string p)
+    public static void Setpath(string p)
     {
         path = p;
         pathSet = true;
@@ -257,7 +257,7 @@ public class Meshtofile : MonoBehaviour {
         return finalvertex;
     }
 
-    private bool checkSave()
+    private bool CheckSave()
     {
 
         try {
@@ -273,7 +273,7 @@ public class Meshtofile : MonoBehaviour {
 
     void Update()
     {
-        if (checkSave())
+        if (CheckSave())
         {
             if (pathSet)
             {

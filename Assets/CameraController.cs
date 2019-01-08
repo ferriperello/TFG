@@ -123,7 +123,7 @@ public class CameraController : MonoBehaviour {
 
     }
 
-    IEnumerator wait()
+    IEnumerator Wait()
     {
         yield return new WaitForSeconds(5);
     }

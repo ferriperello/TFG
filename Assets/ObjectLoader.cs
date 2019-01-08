@@ -29,7 +29,7 @@ public class ObjectLoader : MonoBehaviour {
                 Camera.main.GetComponent<CameraController>().WhenLoadedCamera();
                 RayTracing_Expansion.WhenLoadedRT();
                 firstLoad = false;
-                StartCoroutine(wait());
+                StartCoroutine(Wait());
                 progressText.enabled = false;
                 loadButton.SetActive(false);
             }
@@ -37,7 +37,7 @@ public class ObjectLoader : MonoBehaviour {
 
         if (fpdone)
         {
-            loadObject();
+            LoadObject();
             fpdone = false;
         }
     }
@@ -52,7 +52,7 @@ public class ObjectLoader : MonoBehaviour {
         }
     }
 
-    public void loadObject() {
+    public void LoadObject() {
         firstLoad = true;
         objImporter = loadedObject.AddComponent<ObjectImporter>();
         importOptions.buildColliders = true;
@@ -60,13 +60,13 @@ public class ObjectLoader : MonoBehaviour {
         
     }
 
-    public static void setFilepath(string fp)
+    public static void SetFilepath(string fp)
     {
         filePath = fp;
         fpdone = true;
     }
 
-    IEnumerator wait()
+    IEnumerator Wait()
     {
         yield return new WaitForSeconds(5);
     }

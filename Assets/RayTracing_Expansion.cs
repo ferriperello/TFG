@@ -138,20 +138,59 @@ public class RayTracing_Expansion : MonoBehaviour {
     {
 
         Debug.Log("TESTING WITH " + totalRays + " rays");
-        var chrono = System.Diagnostics.Stopwatch.StartNew();
+        
         double total = 0;
         double lasthitround = 1;
         Debug.Log("minrounds : " + minRaysNoHit);
         findedTriangles = new bool[nTriangles];
         nts = new int[nTriangles * 3]; ;
-
+        float tenPercent = totalRays * 0.1f;
+        
+        progressText.enabled = true;
+        progressText.text = "Ray Tracing at 0 %";
         Debug.Log(CubeManaging.GetTotalVolume());
         //fer el loop
+
+        Rays(lasthitround, total, tenPercent);
+
+        //set new triangles
+        int painted = 0;
+        int j = 0;
+        for (int i = 0; i < nTriangles; i++)
+        {
+            if (findedTriangles[i])
+            {
+                painted++;
+                nts[j] = ots[i * 3];
+                nts[j + 1] = ots[(i * 3) + 1];
+                nts[j + 2] = ots[(i * 3) + 2];
+                j += 3;
+            }
+        }
+        loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = nts;
+        ntsSize = j;
+        Debug.Log("Tamany nts = " + j);
+        Debug.Log("Painted Triangles = " + painted);
+        Debug.Log("Descarted Triangles = " + (nTriangles - painted));
+        Debug.Log("Of a total of " + nTriangles + " Triangles");
+
+    }
+
+    private void Rays(double lasthitround,double total, float tenPercent)
+    {
+        var chrono = System.Diagnostics.Stopwatch.StartNew();
+        int percent = 0;
+
         for (int i = 0; i < totalRays; i++)
         {
             if (!(lasthitround % minRaysNoHit == 0))
             {
-                if (i % 1000 == 0) Debug.Log("Iteració : " + i);
+                if (i % tenPercent == 0)
+                {
+                    percent += 1;
+                    progressText.text = "Ray Tracing at " + (percent * 10).ToString() + "%";
+                    //Debug.Log("eeoo");
+                }
                 //Vector3 randomXY = Random.rotation.eulerAngles;
                 Vector3 randomXY = UnityEngine.Random.insideUnitSphere;
                 //Debug.Log(randomXY);
@@ -242,29 +281,7 @@ public class RayTracing_Expansion : MonoBehaviour {
         Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
         Debug.Log("Rounds without hit " + lasthitround);
 
-        //set new triangles
-        int painted = 0;
-        int j = 0;
-        for (int i = 0; i < nTriangles; i++)
-        {
-            if (findedTriangles[i])
-            {
-                painted++;
-                nts[j] = ots[i * 3];
-                nts[j + 1] = ots[(i * 3) + 1];
-                nts[j + 2] = ots[(i * 3) + 2];
-                j += 3;
-            }
-        }
-        loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = nts;
-        ntsSize = j;
-        Debug.Log("Tamany nts = " + j);
-        Debug.Log("Painted Triangles = " + painted);
-        Debug.Log("Descarted Triangles = " + (nTriangles - painted));
-        Debug.Log("Of a total of " + nTriangles + " Triangles");
-
     }
-
 
     private void DoExpansion()
     {
@@ -342,6 +359,8 @@ public class RayTracing_Expansion : MonoBehaviour {
         try
         {
             RayTracing();
+            StartCoroutine(Wait());
+            progressText.enabled = false;
         }
         catch (System.NullReferenceException e)
         {

@@ -33,11 +33,11 @@ public class ExportTrianglesandCubes : MonoBehaviour {
         else
         {
             //Debug.Log("False pathset");
-            saveButton.SetActive(true);
+            //saveButton.SetActive(true);
         }
     }
 
-    public static void SetPath(string p)
+    public static void SetExportPath(string p)
     {
         path = p;
         pathSet = true;
@@ -89,7 +89,7 @@ public class ExportTrianglesandCubes : MonoBehaviour {
     private string CreateStringBoolean()
     {
         StringBuilder sb = new StringBuilder();
-        sb.AppendFormat("{0} Triangles", triangleSize).Append("\n");
+        sb.AppendFormat("{0} Triangles of a total of {1} ", triangleSize,findedTriangles.Length).Append("\n");
         for (int i = 0; i < findedTriangles.Length; i++)
         {
             if (findedTriangles[i])
