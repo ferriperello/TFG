@@ -13,6 +13,7 @@ public class ExportTrianglesandCubes : MonoBehaviour {
     private static string path;
     public bool[] findedTriangles;
     public static ArrayList cubes;
+    private int triangleSize;
 
     private static bool pathSet = false;
 
@@ -46,6 +47,7 @@ public class ExportTrianglesandCubes : MonoBehaviour {
     {
         Debug.Log("ENTRO");
         findedTriangles = RayTracing_Expansion.GetFindedTriangles();
+        triangleSize = RayTracing_Expansion.GetTriangleSize()/3;
         cubes = CubeManaging.GetCubesArray();
         Save();
         Debug.Log("DONE");
@@ -60,7 +62,6 @@ public class ExportTrianglesandCubes : MonoBehaviour {
         try
         {
             string dataFilePath = Path.Combine(path, actualDate+".txt");
-            File.WriteAllText(path + "prova.txt", fileContent);
             File.WriteAllText(dataFilePath, fileContent);
         }
         catch (System.IO.IOException e)
@@ -88,7 +89,7 @@ public class ExportTrianglesandCubes : MonoBehaviour {
     private string CreateStringBoolean()
     {
         StringBuilder sb = new StringBuilder();
-        sb.AppendFormat("{0} Triangles", findedTriangles.Length).Append("\n");
+        sb.AppendFormat("{0} Triangles", triangleSize).Append("\n");
         for (int i = 0; i < findedTriangles.Length; i++)
         {
             if (findedTriangles[i])
