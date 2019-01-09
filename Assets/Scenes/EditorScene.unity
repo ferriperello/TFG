@@ -4708,7 +4708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadedObject: {fileID: 1393274164}
   importOptions:
-    zUp: 1
+    zUp: 0
     litDiffuse: 0
     convertToDoubleSided: 0
     modelScaling: 1
