@@ -26,6 +26,8 @@ public class RayTestingScript : MonoBehaviour {
         
         if (Input.GetKey(KeyCode.T))
         {
+            Physics.queriesHitBackfaces = true;
+
             int loop = 10000;
             Debug.Log("TESTING WITH " + loop + " rays");
             var chrono = System.Diagnostics.Stopwatch.StartNew();
@@ -47,9 +49,26 @@ public class RayTestingScript : MonoBehaviour {
                     total = total + 1;
                     if (total % 1000 == 0)
                     {
+
+                        MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                        Mesh mesh = meshCollider.sharedMesh;
+                        int[] triangles = mesh.triangles;
+                        Vector3[] normals = mesh.normals;
+
+
+                        Vector3 p0 = normals[triangles[hitInfo.triangleIndex * 3 + 0]];
+                        Vector3 p1 = normals[triangles[hitInfo.triangleIndex * 3 + 1]];
+                        Vector3 p2 = normals[triangles[hitInfo.triangleIndex * 3 + 2]];
+
+
+                        Debug.Log("NORMALS : " + p0 + ',' + p1 + ',' + p2);
+                        Debug.Log("FACE NORMAL : " + ((p0 + p1 + p2) / 3));
+                        Debug.Log(hitInfo.normal);
+
                         GameObject newCube = Instantiate(cube, new Vector3(0, 0, 0), Quaternion.identity);
                         newCube.transform.localScale = new Vector3(10f, 10f, 10f);
                         newCube.transform.position = hitInfo.point;
+                        Debug.Log(hitInfo.point);
                     }
                 }
                 /*//Part del codi per a retornar el triangle amb el que ha colisionat
@@ -94,6 +113,24 @@ public class RayTestingScript : MonoBehaviour {
             //Physics.Raycast(ray, out hitInfo);
             if (Physics.Raycast(ray, out hitInfo))
             {
+                MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                Mesh mesh = meshCollider.sharedMesh;
+                Vector3[] vertices = mesh.vertices;
+                int[] triangles = mesh.triangles;
+                Vector3[] normals = mesh.normals;
+                
+
+                Vector3 p0 = normals[triangles[hitInfo.triangleIndex * 3 + 0]];
+                Vector3 p1 = normals[triangles[hitInfo.triangleIndex * 3 + 1]];
+                Vector3 p2 = normals[triangles[hitInfo.triangleIndex * 3 + 2]];
+
+
+                Debug.Log("NORMALS : "+p0+','+p1+','+p2);
+                Debug.Log("FACE NORMAL : " + ((p0 + p1 + p2) / 3));
+                Debug.Log(hitInfo.normal);
+
+
+
                 Debug.Log("HIT");
                 GameObject newCube = Instantiate(cube, new Vector3(0, 0, 0), Quaternion.identity);
                 newCube.transform.localScale = new Vector3(10f, 10f, 10f);

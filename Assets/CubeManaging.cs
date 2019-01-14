@@ -145,23 +145,6 @@ public class CubeManaging : MonoBehaviour {
         return (GameObject)cubes[i];
     }
 
-    public void ToggleCanvas()
-    {
-        if (togglecanvas)
-        {
-            CubeCanvas.SetActive(false);
-            togglecanvas = false;
-            newheight.text = triangleHeight.ToString();
-        }
-        else
-        {
-            CubeCanvas.SetActive(true);
-            togglecanvas = true;
-            newheight.text = triangleHeight.ToString();
-        }
-
-    }
-
     public void ChangeHeigth()
     {
         triangleHeight = float.Parse(newheight.text);

@@ -9,9 +9,17 @@ using SimpleFileBrowser;
 public class Menu_Manager : MonoBehaviour {
 
     private static string filePath;
+    
+    public GameObject CubePanel;
+    public GameObject RTPanel;
+    public GameObject EPPanel;
+    private bool CubePanelOn = false;
+    private bool RTPanelOn = false;
+    private bool EPPanelOn = false;
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
         FileBrowser.SetFilters(true, new FileBrowser.Filter("Objects", ".obj"));
         FileBrowser.SetDefaultFilter(".obj");
         FileBrowser.AddQuickLink("Users", "C:\\Users", null);
@@ -24,6 +32,7 @@ public class Menu_Manager : MonoBehaviour {
 
     public void OpenBrowser()
     {
+        ToggleOffAll();
         StartCoroutine(ShowLoadDialogCoroutine());
         
     }
@@ -51,6 +60,7 @@ public class Menu_Manager : MonoBehaviour {
 
     public void OpenSaver()
     {
+        ToggleOffAll();
         StartCoroutine(ShowSaveDialogCoroutine());
     }
 
@@ -70,6 +80,70 @@ public class Menu_Manager : MonoBehaviour {
             ExportTrianglesandCubes.SetExportPath(filePath+"\\");
 
         }
+    }
+
+    public void ToggleCubePanel()
+    {
+        if (CubePanelOn)
+        {
+            CubePanelOn = false;
+            CubePanel.SetActive(false);
+        }
+        else
+        {
+            CubePanelOn = true;
+            RTPanelOn = false;
+            EPPanelOn = false;
+            RTPanel.SetActive(false);
+            EPPanel.SetActive(false);
+            CubePanel.SetActive(true);
+        }
+    }
+
+    public void ToggleRTPanel()
+    {
+        if (RTPanelOn)
+        {
+            RTPanelOn = false;
+            RTPanel.SetActive(false);
+        }
+        else
+        {
+            RTPanelOn = true;
+            CubePanelOn = false;
+            EPPanelOn = false;
+            EPPanel.SetActive(false);
+            CubePanel.SetActive(false);
+            RTPanel.SetActive(true);
+        }
+    }
+
+    public void ToggleEPanel()
+    {
+        if (EPPanelOn)
+        {
+            EPPanelOn = false;
+            EPPanel.SetActive(false);
+        }
+        else
+        {
+            EPPanelOn = true;
+            CubePanelOn = false;
+            RTPanelOn = false;
+            RTPanel.SetActive(false);
+            CubePanel.SetActive(false);
+            EPPanel.SetActive(true);
+        }
+    }
+
+    private void ToggleOffAll()
+    {
+        CubePanel.SetActive(false);
+        RTPanel.SetActive(false);
+        EPPanel.SetActive(false);
+        CubePanelOn = false;
+        RTPanelOn = false;
+        EPPanelOn = false;
     }
 }
 

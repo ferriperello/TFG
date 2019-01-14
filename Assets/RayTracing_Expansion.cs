@@ -22,18 +22,14 @@ public class RayTracing_Expansion : MonoBehaviour {
     public Text newTotalRays;
     private int totalRays = 10000000;
     public Text newMinRaysNoHit;
-    private int minRaysNoHit = 1000000;
+    private int minRaysNoHit = 50000;
     public Text newMaxTime;
-    private int maxTime = 90;
-
-    public GameObject RTCanvas;
-    private bool toggleRTcanvas = false;
+    private double maxTime = 90;
+    private bool stop = false;
 
     //Expansion
     private int loopNumber = 1;
     public Text newnumloops;
-    public GameObject ExpansionCanvas;
-    private bool toggleLoopcanvas = false;
     
     public Dictionary<int, List<int>> neighboursinfo = new Dictionary<int, List<int>>();
     public Dictionary<Vector3, List<int>> vertexinfo = new Dictionary<Vector3, List<int>>();
@@ -141,13 +137,13 @@ public class RayTracing_Expansion : MonoBehaviour {
         
         double total = 0;
         double lasthitround = 1;
-        Debug.Log("minrounds : " + minRaysNoHit);
+        //Debug.Log("minrounds : " + minRaysNoHit);
         findedTriangles = new bool[nTriangles];
         nts = new int[nTriangles * 3]; ;
         float tenPercent = totalRays * 0.1f;
         
-        progressText.enabled = true;
-        progressText.text = "Ray Tracing at 0 %";
+        //progressText.enabled = true;
+        //progressText.text = "Ray Tracing at 0 %";
         Debug.Log(CubeManaging.GetTotalVolume());
         //fer el loop
 
@@ -183,12 +179,12 @@ public class RayTracing_Expansion : MonoBehaviour {
 
         for (int i = 0; i < totalRays; i++)
         {
-            if (!(lasthitround % minRaysNoHit == 0))
-            {
+            if (!(lasthitround % minRaysNoHit == 0) && !MaxTimeExcdeeded(chrono)) {
+                
                 if (i % tenPercent == 0)
                 {
                     percent += 1;
-                    progressText.text = "Ray Tracing at " + (percent * 10).ToString() + "%";
+                    //progressText.text = "Ray Tracing at " + (percent * 10).ToString() + "%";
                     //Debug.Log("eeoo");
                 }
                 //Vector3 randomXY = Random.rotation.eulerAngles;
@@ -198,17 +194,16 @@ public class RayTracing_Expansion : MonoBehaviour {
                 //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
                 float randvolume = UnityEngine.Random.Range(0.0f, CubeManaging.GetTotalVolume());
                 ArrayList volumes = CubeManaging.GetVolumesArray();
-                Debug.Log("randV" + randvolume);
+                //Debug.Log("randV" + randvolume);
                 int k = 0;
                 float volsdescarted = 0;
-                Debug.Log("vol de " + k + ":" + volumes[k]);
+                //Debug.Log("vol de " + k + ":" + volumes[k]);
                 while ((volsdescarted + (float)volumes[k]) < randvolume)
                 {
-                    Debug.Log("entro");
                     volsdescarted += (float)volumes[k];
                     k++;
-                    Debug.Log("vol de " + k + ":" + volumes[k]);
-                    Debug.Log("totalVuntilnow" + volsdescarted);
+                    //Debug.Log("vol de " + k + ":" + volumes[k]);
+                    //Debug.Log("totalVuntilnow" + volsdescarted);
 
                 }
                 Debug.Log(volumes);
@@ -218,47 +213,20 @@ public class RayTracing_Expansion : MonoBehaviour {
                 //Bounds b = someMesh.bounds;
                 Vector3 max = b.max;
                 Vector3 min = b.min;
-                Debug.Log("MAX" + max);
-                Debug.Log("MIN" + min);
+                //Debug.Log("MAX" + max);
+                //Debug.Log("MIN" + min);
                 Vector3 point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
-                while (!b.Contains(point))
+                while (!b.Contains(point) || IsUnderground(point))
                 {
                     point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+
                 }
-                //Instantiate(prefab, point, Quaternion.identity);*/
                 Ray ray = new Ray(point, randomXY);
-                //Ray ray = new Ray(transform.position, randomXY);
-                //Ray ray = new Ray(transform.position, new Vector3(0, 1, 0));
-                //Debug.DrawRay(new Vector3(0,0,0),randomXY*100,Color.green,500);
                 RaycastHit hitInfo;
-                //Physics.Raycast(ray, out hitInfo);
-                /*if (Physics.Raycast(ray, out hitInfo))
-                {
-                 total = total + 1;
-                }*/
                 //Part del codi per a retornar el triangle amb el que ha colisionat
                 if (Physics.Raycast(ray, out hitInfo))
                 {
                     total += 1;
-                    //Physics.Raycast(ray, out hitInfo);
-                    //Debug.Log(hitInfo.triangleIndex);
-                    //MeshCollider meshCollider = hitInfo.collider as MeshCollider;
-                    /* (meshCollider == null || meshCollider.sharedMesh == null)
-                        break;*/
-
-                    /* Mesh mesh = meshCollider.sharedMesh;
-                     Vector3[] vertices = mesh.vertices;
-                     int[] triangles = mesh.triangles;
-                     Vector3 p0 = vertices[triangles[hitInfo.triangleIndex * 3 + 0]];
-                     Vector3 p1 = vertices[triangles[hitInfo.triangleIndex * 3 + 1]];
-                     Vector3 p2 = vertices[triangles[hitInfo.triangleIndex * 3 + 2]];
-                     Transform hitTransform = hitInfo.collider.transform;
-                     p0 = hitTransform.TransformPoint(p0);
-                     p1 = hitTransform.TransformPoint(p1);
-                     p2 = hitTransform.TransformPoint(p2);
-                     Debug.DrawLine(p0, p1, Color.blue, 500);
-                     Debug.DrawLine(p1, p2, Color.blue, 500);
-                     Debug.DrawLine(p2, p0, Color.blue, 500);*/
                     if (findedTriangles[hitInfo.triangleIndex] == false)
                     {
                         findedTriangles[hitInfo.triangleIndex] = true;
@@ -274,6 +242,11 @@ public class RayTracing_Expansion : MonoBehaviour {
                     lasthitround += 1;
                 }
             }
+            else
+            {
+                Debug.Log(i);
+                i = totalRays;
+            }
         }
         chrono.Stop();
 
@@ -281,6 +254,32 @@ public class RayTracing_Expansion : MonoBehaviour {
         Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
         Debug.Log("Rounds without hit " + lasthitround);
 
+    }
+
+    private bool MaxTimeExcdeeded(System.Diagnostics.Stopwatch cr)
+    {
+        System.TimeSpan ts = cr.Elapsed;
+        double minutes = ts.TotalMinutes;
+        //Debug.Log("m:" + minutes);
+        if (minutes > maxTime) return true;
+        return false;
+    }
+
+    private bool IsUnderground(Vector3 point)
+    {
+        bool underground = false;
+        Physics.queriesHitBackfaces = true;
+
+        Ray ray = new Ray(point, new Vector3(0, 1, 0));
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            if (hitInfo.normal.y > 0) underground = true;
+        }
+
+        Physics.queriesHitBackfaces = false;
+        return underground;
     }
 
     private void DoExpansion()
@@ -356,6 +355,8 @@ public class RayTracing_Expansion : MonoBehaviour {
 
     public void RayTracingStart()
     {
+        progressText.enabled = true;
+        progressText.text = "Ongoing Ray Tracing";
         try
         {
             RayTracing();
@@ -390,47 +391,9 @@ public class RayTracing_Expansion : MonoBehaviour {
 
     }
 
-    public void ToggleLoopCanvas()
-    {
-        if (toggleLoopcanvas)
-        {
-            ExpansionCanvas.SetActive(false);
-            toggleLoopcanvas = false;
-            newnumloops.text = loopNumber.ToString();
-        }
-        else
-        {
-            ExpansionCanvas.SetActive(true);
-            toggleLoopcanvas = true;
-            newnumloops.text = loopNumber.ToString();
-        }
-
-    }
-
     public void ChangeLoopNumber()
     {
         loopNumber = int.Parse(newnumloops.text);
-    }
-
-    public void ToggleRTCanvas()
-    {
-        if (toggleRTcanvas)
-        {
-            RTCanvas.SetActive(false);
-            toggleRTcanvas = false;
-            newTotalRays.text = totalRays.ToString();
-            newMinRaysNoHit.text = minRaysNoHit.ToString();
-            newMaxTime.text = maxTime.ToString();
-        }
-        else
-        {
-            RTCanvas.SetActive(true);
-            toggleRTcanvas = true;
-            newTotalRays.text = totalRays.ToString();
-            newMinRaysNoHit.text = minRaysNoHit.ToString();
-            newMaxTime.text = maxTime.ToString();
-        }
-
     }
 
     public void ResetOBJ()
@@ -450,7 +413,7 @@ public class RayTracing_Expansion : MonoBehaviour {
 
     public void ChangeMaxTimeNumber()
     {
-        maxTime = int.Parse(newMaxTime.text);
+        maxTime = double.Parse(newMaxTime.text);
     }
 
     public static int GetTriangleSize()
