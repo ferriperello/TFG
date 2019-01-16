@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RayTracing_Expansion : MonoBehaviour {
+public class RayCasting_Expansion : MonoBehaviour {
 
     public GameObject loadedObj;
     private static bool loaded = false;
@@ -65,9 +65,9 @@ public class RayTracing_Expansion : MonoBehaviour {
         //findedTriangles = new bool[nTriangles];
         findedTriangles = Enumerable.Repeat(true, nTriangles).ToArray<bool>();
         nts = new int[nTriangles * 3];
-        Debug.Log(ots[0]);
-        Debug.Log(findedTriangles.Length);
-        Debug.Log(findedTriangles[0]);
+        //Debug.Log(ots[0]);
+        //Debug.Log(findedTriangles.Length);
+        //Debug.Log(findedTriangles[0]);
 
         FindNeightbours();
     }
@@ -75,9 +75,9 @@ public class RayTracing_Expansion : MonoBehaviour {
     private void FindNeightbours()
     {
         var chrono = System.Diagnostics.Stopwatch.StartNew();
-        Debug.Log("entro al Diccionari!");
-        Debug.Log("ots length" + ots.Length);
-        Debug.Log("ovs length" + ovs.Length);
+        //Debug.Log("entro al Diccionari!");
+        //Debug.Log("ots length" + ots.Length);
+        //Debug.Log("ovs length" + ovs.Length);
         for (int i = 0; i < nVertex; i++)
         {
             if (!neighboursinfo.ContainsKey(ots[i]))
@@ -124,7 +124,7 @@ public class RayTracing_Expansion : MonoBehaviour {
             }
         }*/
         chrono.Stop();
-        Debug.Log("Bucle total, # de iteracions = " + nVertex);
+        //Debug.Log("Bucle total, # de iteracions = " + nVertex);
         Debug.Log("Numero de Claus creades : " + neighboursinfo.Keys.Count);
         Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
         Debug.Log("Final de creació del Map");
@@ -144,7 +144,7 @@ public class RayTracing_Expansion : MonoBehaviour {
         
         //progressText.enabled = true;
         //progressText.text = "Ray Tracing at 0 %";
-        Debug.Log(CubeManaging.GetTotalVolume());
+        //Debug.Log(CubeManaging.GetTotalVolume());
         //fer el loop
 
         Rays(lasthitround, total, tenPercent);
@@ -206,8 +206,8 @@ public class RayTracing_Expansion : MonoBehaviour {
                     //Debug.Log("totalVuntilnow" + volsdescarted);
 
                 }
-                Debug.Log(volumes);
-                Debug.Log(k);
+                //Debug.Log(volumes);
+                //Debug.Log(k);
                 GameObject cube = CubeManaging.GetCubeinArray(k);
                 Bounds b = cube.GetComponent<Collider>().bounds;
                 //Bounds b = someMesh.bounds;
@@ -349,7 +349,7 @@ public class RayTracing_Expansion : MonoBehaviour {
         nts = (int[])auxnts.Clone();
         loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = (int[])nts.Clone();
         ntsSize = j;
-        Debug.Log("tamany nts = " + ntsSize);
+        //Debug.Log("tamany nts = " + ntsSize);
         Debug.Log("Painted Triangles = " + painted);
     }
 
@@ -359,6 +359,7 @@ public class RayTracing_Expansion : MonoBehaviour {
         progressText.text = "Ongoing Ray Tracing";
         try
         {
+            StartCoroutine(Wait());
             RayTracing();
             StartCoroutine(Wait());
             progressText.enabled = false;
@@ -376,9 +377,10 @@ public class RayTracing_Expansion : MonoBehaviour {
     {
         try
         {
+            Debug.Log("Expanding "+loopNumber+" times");
             for (int i = 0; i < loopNumber; i++)
             {
-                Debug.Log("FAIG EXPANSIO");
+                Debug.Log("Epansion Number " + (i+1));
                 DoExpansion();
             }
         }

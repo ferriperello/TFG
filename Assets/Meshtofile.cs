@@ -40,7 +40,7 @@ public class Meshtofile : MonoBehaviour {
     public void StartSave()
     {
         Debug.Log("ENTRO");
-        triangleSize = RayTracing_Expansion.GetTriangleSize();
+        triangleSize = RayCasting_Expansion.GetTriangleSize();
         mesh = GO.GetComponentInChildren<MeshFilter>().mesh;
         material = GO.GetComponentInChildren<MeshRenderer>().material;
         //path = "C:/Users/ferra/Documents/TFG/exportTry/";

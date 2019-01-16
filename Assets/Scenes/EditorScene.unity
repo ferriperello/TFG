@@ -5656,7 +5656,7 @@ GameObject:
   - component: {fileID: 2045346493}
   - component: {fileID: 2045346494}
   m_Layer: 0
-  m_Name: RayTracer_Extensioner
+  m_Name: RayCaster_Extensioner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

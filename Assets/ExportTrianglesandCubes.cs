@@ -45,12 +45,10 @@ public class ExportTrianglesandCubes : MonoBehaviour {
 
     public void StartSave()
     {
-        Debug.Log("ENTRO");
-        findedTriangles = RayTracing_Expansion.GetFindedTriangles();
-        triangleSize = RayTracing_Expansion.GetTriangleSize()/3;
+        findedTriangles = RayCasting_Expansion.GetFindedTriangles();
+        triangleSize = RayCasting_Expansion.GetTriangleSize()/3;
         cubes = CubeManaging.GetCubesArray();
         Save();
-        Debug.Log("DONE");
     }
 
     private void Save()

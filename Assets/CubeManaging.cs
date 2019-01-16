@@ -55,7 +55,7 @@ public class CubeManaging : MonoBehaviour {
                 //Vector3 spawnPosition = camera.ScreenToWorldPoint(Input.mousePosition);
                 //Debug.Log(spawnPosition.ToString());
                 //GameObject newCube = Instantiate(cube, spawnPosition, Quaternion.Euler(new Vector3(0, 0, 0)));
-                Debug.Log("NOT");
+
                 this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit))
@@ -70,7 +70,7 @@ public class CubeManaging : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.LeftShift) & Input.GetMouseButtonDown(0))
         {
-            Debug.Log("CREATING");
+
             Create();
         }
     }
@@ -78,7 +78,6 @@ public class CubeManaging : MonoBehaviour {
     private void Create() {
         if (Input.GetMouseButtonDown(0) & creating & maxx.Equals(new Vector3(0, 0, 0)))
         {
-            Debug.Log("CREAT");
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
@@ -86,10 +85,10 @@ public class CubeManaging : MonoBehaviour {
                 creating = false;
                 //GameObject newCube = Instantiate(cube, new Vector3(hit.point.x, hit.point.y + 0.5f, hit.point.z), Quaternion.identity);
             }
-            Debug.Log("MINX");
-            Debug.Log(minx.ToString());
-            Debug.Log("MAXX");
-            Debug.Log(maxx.ToString());
+            //Debug.Log("MINX");
+            //Debug.Log(minx.ToString());
+            //Debug.Log("MAXX");
+            //Debug.Log(maxx.ToString());
             GameObject newCube = Instantiate(cube, new Vector3(0,0,0), Quaternion.identity);
             //newCube.transform.position = new Vector3(minx.x+Mathf.Abs(minx.x-maxx.x), minx.y + Mathf.Abs(minx.y - maxx.y), minx.z + Mathf.Abs(minx.z - maxx.z));
             // newCube.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
@@ -102,10 +101,10 @@ public class CubeManaging : MonoBehaviour {
             //newCube.transform.localScale = new Vector3(distance, 10f, distance);
             Vector3 newpos = minx + (between / 2.0f);
             newpos.y = Mathf.Min(maxx.y,minx.y);
-            Debug.Log("Maxx y = " + maxx.y);
-            Debug.Log("Minx y = " + minx.y);
-            Debug.Log("Min y = " + newpos.y);
-            Debug.Log("THeight y / 2 = " + triangleHeight / 2);
+            //Debug.Log("Maxx y = " + maxx.y);
+            //Debug.Log("Minx y = " + minx.y);
+            //Debug.Log("Min y = " + newpos.y);
+            //Debug.Log("THeight y / 2 = " + triangleHeight / 2);
             
            
             
@@ -113,7 +112,7 @@ public class CubeManaging : MonoBehaviour {
             newCube.transform.localScale = new Vector3(Mathf.Abs(betweenX), triangleHeight, Mathf.Abs(betweenZ));
             newpos.y += (triangleHeight/2);
             newCube.transform.position = newpos;
-            Debug.Log("Min y = " + newpos.y);
+            //Debug.Log("Min y = " + newpos.y);
 
             float cubevolume = newCube.transform.localScale.x * newCube.transform.localScale.y * newCube.transform.localScale.z;
             cubes.Add(newCube);
