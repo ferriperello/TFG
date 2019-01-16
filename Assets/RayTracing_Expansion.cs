@@ -244,7 +244,7 @@ public class RayTracing_Expansion : MonoBehaviour {
             }
             else
             {
-                Debug.Log(i);
+                Debug.Log("Rajos Llançats"+i);
                 i = totalRays;
             }
         }
