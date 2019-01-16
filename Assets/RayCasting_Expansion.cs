@@ -20,7 +20,7 @@ public class RayCasting_Expansion : MonoBehaviour {
     public int nTriangles;
     public static int ntsSize = 0;
     public Text newTotalRays;
-    private int totalRays = 10000000;
+    private int totalRays = 1000000;
     public Text newMinRaysNoHit;
     private int minRaysNoHit = 50000;
     public Text newMaxTime;
@@ -139,15 +139,14 @@ public class RayCasting_Expansion : MonoBehaviour {
         double lasthitround = 1;
         //Debug.Log("minrounds : " + minRaysNoHit);
         findedTriangles = new bool[nTriangles];
-        nts = new int[nTriangles * 3]; ;
-        float tenPercent = totalRays * 0.1f;
+        nts = new int[nTriangles * 3];
         
         //progressText.enabled = true;
         //progressText.text = "Ray Tracing at 0 %";
         //Debug.Log(CubeManaging.GetTotalVolume());
         //fer el loop
 
-        Rays(lasthitround, total, tenPercent);
+        Rays(lasthitround, total);
 
         //set new triangles
         int painted = 0;
@@ -172,28 +171,27 @@ public class RayCasting_Expansion : MonoBehaviour {
 
     }
 
-    private void Rays(double lasthitround,double total, float tenPercent)
+    private void Rays(double lasthitround,double total)
     {
         var chrono = System.Diagnostics.Stopwatch.StartNew();
-        int percent = 0;
+
+        ArrayList volumes = CubeManaging.GetVolumesArray();
+
+        Debug.Log(totalRays);
+        Debug.Log(minRaysNoHit);
+        Debug.Log(maxTime);
 
         for (int i = 0; i < totalRays; i++)
         {
             if (!(lasthitround % minRaysNoHit == 0) && !MaxTimeExcdeeded(chrono)) {
                 
-                if (i % tenPercent == 0)
-                {
-                    percent += 1;
-                    //progressText.text = "Ray Tracing at " + (percent * 10).ToString() + "%";
-                    //Debug.Log("eeoo");
-                }
                 //Vector3 randomXY = Random.rotation.eulerAngles;
                 Vector3 randomXY = UnityEngine.Random.insideUnitSphere;
                 //Debug.Log(randomXY);
                 //Debug.Log(sphere.transform.position);
                 //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
                 float randvolume = UnityEngine.Random.Range(0.0f, CubeManaging.GetTotalVolume());
-                ArrayList volumes = CubeManaging.GetVolumesArray();
+                
                 //Debug.Log("randV" + randvolume);
                 int k = 0;
                 float volsdescarted = 0;
