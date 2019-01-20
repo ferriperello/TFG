@@ -68,7 +68,7 @@ public class Menu_Manager : MonoBehaviour {
     {
         // Show a save file dialog and wait for a response from user
         // save file/folder: file, Initial path: default (Documents), Title: "Load File", submit button text: "Load"
-        yield return FileBrowser.WaitForSaveDialog(true, null, "Save TXT", "Save");
+        yield return FileBrowser.WaitForSaveDialog(true, null, "Export Results", "Save");
 
         // Dialog is closed
         // Print whether a file is chosen (FileBrowser.Success)

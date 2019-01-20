@@ -37,7 +37,6 @@ public class RayTestingScript : MonoBehaviour {
             {
                 //Vector3 randomXY = Random.rotation.eulerAngles;
                 Vector3 randomXY = Random.insideUnitSphere;
-                //Debug.Log(randomXY);
                 //Debug.Log(sphere.transform.position);
                 //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
                 Ray ray = new Ray(sphere.transform.position, randomXY);
@@ -49,6 +48,7 @@ public class RayTestingScript : MonoBehaviour {
                     total = total + 1;
                     if (total % 1000 == 0)
                     {
+                        Debug.Log("DIRECCIO"+randomXY);
 
                         MeshCollider meshCollider = hitInfo.collider as MeshCollider;
                         Mesh mesh = meshCollider.sharedMesh;

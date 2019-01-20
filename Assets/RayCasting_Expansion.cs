@@ -68,6 +68,7 @@ public class RayCasting_Expansion : MonoBehaviour {
         //Debug.Log(ots[0]);
         //Debug.Log(findedTriangles.Length);
         //Debug.Log(findedTriangles[0]);
+        Debug.Log("# Triangles: "+nTriangles);
 
         FindNeightbours();
     }
@@ -353,14 +354,12 @@ public class RayCasting_Expansion : MonoBehaviour {
 
     public void RayTracingStart()
     {
-        progressText.enabled = true;
-        progressText.text = "Ongoing Ray Tracing";
+        
         try
         {
             StartCoroutine(Wait());
             RayTracing();
             StartCoroutine(Wait());
-            progressText.enabled = false;
         }
         catch (System.NullReferenceException e)
         {

@@ -1427,7 +1427,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Ray Tracing
+  m_Text: Visibility
 --- !u!222 &387893050
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3203,7 +3203,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Start Ray Tracing
+  m_Text: Calculate Visibility
 --- !u!222 &1124939157
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5172,7 +5172,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Save OBJ
+  m_Text: Export Results
 --- !u!222 &1790061602
 CanvasRenderer:
   m_ObjectHideFlags: 0
