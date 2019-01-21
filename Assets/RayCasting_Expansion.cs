@@ -191,7 +191,7 @@ public class RayCasting_Expansion : MonoBehaviour {
                 //Debug.Log(randomXY);
                 //Debug.Log(sphere.transform.position);
                 //Ray ray = new Ray(sphere.transform.position, new Vector3(randomXY.x, -1, randomXY.z));
-                float randvolume = UnityEngine.Random.Range(0.0f, CubeManaging.GetTotalVolume());
+                float randvolume = UnityEngine.Random.Range(0.1f, CubeManaging.GetTotalVolume()-1);
                 
                 //Debug.Log("randV" + randvolume);
                 int k = 0;
@@ -207,7 +207,9 @@ public class RayCasting_Expansion : MonoBehaviour {
                 }
                 //Debug.Log(volumes);
                 //Debug.Log(k);
+                //Debug.Log("agafo el cub: " + k);
                 GameObject cube = CubeManaging.GetCubeinArray(k);
+                //Debug.Log("raig:" + i);
                 Bounds b = cube.GetComponent<Collider>().bounds;
                 //Bounds b = someMesh.bounds;
                 Vector3 max = b.max;
