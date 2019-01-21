@@ -210,7 +210,10 @@ public class RayCasting_Expansion : MonoBehaviour {
                 //Debug.Log("agafo el cub: " + k);
                 GameObject cube = CubeManaging.GetCubeinArray(k);
                 //Debug.Log("raig:" + i);
-                Bounds b = cube.GetComponent<Collider>().bounds;
+                //Collider coll = cube.GetComponent<Collider>();
+                //coll.enabled = true;
+                //Bounds b = cube.GetComponent<Collider>().bounds;
+                Bounds b = cube.GetComponent<Renderer>().bounds;
                 //Bounds b = someMesh.bounds;
                 Vector3 max = b.max;
                 Vector3 min = b.min;
@@ -222,6 +225,8 @@ public class RayCasting_Expansion : MonoBehaviour {
                     point = new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
 
                 }
+                //Debug.Log("POINT: "+point);
+                //Debug.Log("DIR: "+randomXY);
                 Ray ray = new Ray(point, randomXY);
                 RaycastHit hitInfo;
                 //Part del codi per a retornar el triangle amb el que ha colisionat
