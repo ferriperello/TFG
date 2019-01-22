@@ -290,6 +290,9 @@ public class RayCasting_Expansion : MonoBehaviour {
 
     private void DoExpansion()
     {
+
+        var chrono = System.Diagnostics.Stopwatch.StartNew();
+
         //tenint els nous triangles visibles des del punt, fem visibles tots els seus veins (comparteixen un vertex)
         int[] auxnts = (int[])nts.Clone();
         bool[] auxfinded = (bool[])findedTriangles.Clone();
@@ -356,7 +359,9 @@ public class RayCasting_Expansion : MonoBehaviour {
         loadedObj.GetComponentInChildren<MeshFilter>().mesh.triangles = (int[])nts.Clone();
         ntsSize = j;
         //Debug.Log("tamany nts = " + ntsSize);
+        chrono.Stop();
         Debug.Log("Painted Triangles = " + painted);
+        Debug.Log("Total Time " + chrono.ElapsedMilliseconds);
     }
 
     public void RayTracingStart()
